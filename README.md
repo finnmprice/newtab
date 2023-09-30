@@ -1,1 +1,1 @@
-![example image](https://github.com/finnmprice/newtab/style/demo.png?raw=true)
+![example image](https://github.com/finnmprice/newtab/blob/main/style/demo.png?raw=true
