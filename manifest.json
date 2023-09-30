@@ -1,0 +1,15 @@
+{
+    "name": "Simple New Tab",
+    "description": "better new tab page",
+    "version": "1.0",
+    "chrome_url_overrides": {
+        "newtab": "newtab.html"
+    },
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "incognito": "split",
+    "manifest_version": 3
+}

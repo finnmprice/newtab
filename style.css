@@ -1,0 +1,27 @@
+@font-face {
+    font-family: helveticaBold;
+    src: url(/helveticaBold.ttf);
+}
+
+body {
+    background-color: rgb(50, 54, 57);
+    font-family: helveticaBold;
+}
+
+#time {
+    float: right;
+    margin: 0px;
+    margin-right: 10px;
+    color: #fff;
+    font-size: 48px;
+}
+
+
+#time {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
