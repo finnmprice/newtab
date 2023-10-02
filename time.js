@@ -23,3 +23,4 @@ function setTime() {
     timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
     document.getElementById("time").innerHTML = timeValue;
 }
+
