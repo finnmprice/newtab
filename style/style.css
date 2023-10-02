@@ -1,8 +1,3 @@
-@font-face {
-    font-family: helveticaBold;
-    src: url(/style/helveticaBold.ttf);
-}
-
 body {
     background-color: rgb(50, 54, 57);
     font-family: monospace;
@@ -21,7 +16,7 @@ body {
     margin: 0px;
     margin-right: 10px;
     color: #fff;
-    font-size: 48px;
+    font-size: 56px;
 }
 
 .center {
@@ -36,7 +31,7 @@ body {
 .settings {
     background-color: #111;
     width: 350px;
-    height: 190px;
+    height: 160px;
     top: 20px;
     border-radius: 10px;
     font-family: monospace;
@@ -54,13 +49,18 @@ body {
 
 #rdisplay, #gdisplay, #bdisplay {
     display: inline-block;
+    margin: 10px;
 }
 
 .settingsButton {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
-    font-size: 12px;
+    right: 15px;
+    bottom: 15px;
+}
+
+.settingsButton img {
+    width: 28px;
+    height: 28px;
 }
 
 .settingsButton button {
