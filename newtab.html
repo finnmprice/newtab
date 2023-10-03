@@ -12,27 +12,36 @@
                 <p style="display: inline-block; margin: 0;">settings</p>
                 <button id="settingsExit">X</button>
                 <div class="bgcolor">
-                    <div class="r">
-                        <label for="r">r </label>
-                        <input type="range" id="rslider" name="r" min="0" max="255"/>
-                        <p id="rdisplay"></p>
+                    <div class="bgcolorLeft">
+                        <div class="r">
+                            <label for="r">r </label>
+                            <input type="range" id="rslider" name="r" min="0" max="255" />
+                            <p id="rdisplay"></p>
+                        </div>
+                        <div class="g">
+                            <label for="g">g </label>
+                            <input type="range" id="gslider" name="g" min="0" max="255" />
+                            <p id="gdisplay"></p>
+                        </div>
+                        <div class="b">
+                            <label for="b">b </label>
+                            <input type="range" id="bslider" name="b" min="0" max="255" />
+                            <p id="bdisplay"></p>
+                        </div>
                     </div>
-                    <div class="g">
-                        <label for="g">g </label>
-                        <input type="range" id="gslider" name="g" min="0" max="255"/>
-                        <p id="gdisplay"></p>
-                    </div>
-                    <div class="b">
-                        <label for="b">b </label>
-                        <input type="range" id="bslider" name="b" min="0" max="255"/>
-                        <p id="bdisplay"></p>
+                    <div class="push"></div>
+                    <div class="bgcolorRight">
+                        <input type="text" id="hex" maxlength="7" value="#" style="display: inline-block;" name="hex">
+                        <button class="randomButton">
+                            <img src="/icons/random.svg"></img>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="settingsButton">
-            <button id="settingsButton"><img src="/icons/settings.svg" ></img></button>
+            <button id="settingsButton"><img src="/icons/settings.svg"></img></button>
         </div>
     </div>
 </body>

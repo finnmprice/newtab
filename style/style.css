@@ -59,8 +59,8 @@ body {
 }
 
 .settingsButton img {
-    width: 28px;
-    height: 28px;
+    width:  24px;
+    height: 24px;
 }
 
 .settingsButton button {
@@ -121,4 +121,50 @@ input[type="range"]::-moz-range-thumb {
     background: #eee;
     margin-top: -5px;
     border-radius: 50%;
+}
+
+.push {
+    margin-left: auto;
+}
+
+.randomButton {
+    margin: 0px;
+    padding: 0px;
+    text-decoration: none;
+    border: none;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.bgcolor {
+    display: flex;
+    align-items: center;
+}
+
+.bgcolorRight {
+    display: inline-block;
+}
+
+.randomButton img {
+    width:  24px;
+    height: 24px;
+
+    margin-top: -17px;
+    position: absolute;
+}
+
+#hex {
+    all: unset;
+    width: 75px;
+    border: none;
+    padding: 0;
+    background-color: #666;
+    color: #fff;
+    padding: 3px;
+    border-radius: 5px;
+
 }
