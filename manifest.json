@@ -14,10 +14,6 @@
     "permissions": [
         "storage"
     ],
-    "content_scripts": [{
-        "matches": ["<all_urls>"],
-        "js": ["/thirdParty/jquery.min.js"]
-    }],
 
     "manifest_version": 3
 }
