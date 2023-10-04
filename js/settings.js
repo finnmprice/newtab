@@ -1,34 +1,39 @@
 timeFontSize = 16;
-updateTime = true;
 hex = document.getElementById('hex');
 
 chrome.storage.local.get(["rgb"]).then((result) => {
-    rgb = result.rgb;
-    if (rgb == undefined)
-        rgb = [44,75,80];
-    let [r,g,b] = rgb;
-    UpdateValue("r", r);
-    UpdateValue("g", g);
-    UpdateValue("b", b);
-    document.body.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
-    hex.value = rgbToHex(r,g,b);
+  rgb = result.rgb;
+  if (rgb == undefined)
+      rgb = [45,75,80];
+  let [r,g,b] = rgb;
+  UpdateValue("r", r);
+  UpdateValue("g", g);
+  UpdateValue("b", b);
+  document.body.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+  hex.value = rgbToHex(r,g,b);
 });
 
 chrome.storage.local.get(["timeShow"]).then((result) => {
-    if (result.timeShow) {
-      $('#time').fadeIn(100);
-      $('#timeToggle').prop("checked", true);
-    }
-    else {
-      $('#time').hide();
-      $('#timeToggle').prop("checked", false);
-    }
+  timeShow = result.timeShow;
+  if (timeShow == undefined)
+    timeShow = true;
+  if (timeShow) {
+    $('#time').fadeIn(100);
+    $('#timeToggle').prop("checked", true);
+  }
+  else {
+    $('#time').hide();
+    $('#timeToggle').prop("checked", false);
+  }
 });
 
 chrome.storage.local.get(["timeFont"]).then((result) => {
-  document.getElementById('time').style.fontSize = result.timeFont + "px";
-  document.getElementById('tslider').value = result.timeFont;
-  document.getElementById('tdisplay').innerHTML = result.timeFont + "px";
+  timeFont = result.timeFont
+  if (result.timeFont == undefined)
+    timeFont = 64;
+  document.getElementById('time').style.fontSize = timeFont + "px";
+  document.getElementById('tslider').value = timeFont;
+  document.getElementById('tdisplay').innerHTML = timeFont + "px";
 });
 
 rslider = document.getElementById('rslider');
@@ -90,7 +95,18 @@ $(".randomButton").click(function(){
     UpdateValue("g", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
     UpdateValue("b", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
     document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + bslider.value + ")";
+
 });
+
+
+
+function printColor(ev) {
+  const color = ev.target.value
+  const r = parseInt(color.substr(1,2), 16)
+  const g = parseInt(color.substr(3,2), 16)
+  const b = parseInt(color.substr(5,2), 16)
+  console.log(`red: ${r}, green: ${g}, blue: ${b}`)
+}
 
 
 function randomInt(min, max) { 
@@ -118,12 +134,10 @@ function hexToRgb(hex) {
 
 $('#timeToggle').change(function() {
   if(!this.checked) {
-    // updateTime = false;
     $('#time').fadeOut(100);
     chrome.storage.local.set({ timeShow: false });
   }
   else {
-    // updateTime = true;
     $('#time').fadeIn(100);
     chrome.storage.local.set({ timeShow: true });
   }
@@ -137,7 +151,7 @@ function setTime() {
   var currentTime = new Date();
     var time = currentTime.getHours() + ":" + currentTime.getMinutes();
 
-    time = time.split(':'); // convert to array
+    time = time.split(':');
 
     var hours = Number(time[0]);
     var minutes = Number(time[1]);
@@ -152,10 +166,6 @@ function setTime() {
       timeValue= "12";
     }
 
-    timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+    timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
     document.getElementById("time").innerHTML = timeValue;
-}
-
-function updateTime(bool) {
-  updateTime = bool;
 }
