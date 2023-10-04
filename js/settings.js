@@ -159,13 +159,14 @@ function setTime() {
     var timeValue;
 
     if (hours > 0 && hours <= 12) {
-      timeValue= "" + hours;
+      timeValue = "" + hours;
     } else if (hours > 12) {
-      timeValue= "" + (hours - 12);
+      timeValue = "" + (hours - 12);
     } else if (hours == 0) {
-      timeValue= "12";
+      timeValue = "12";
     }
 
     timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
-    document.getElementById("time").innerHTML = timeValue;
+    if(document.getElementById("time").innerHTML !== timeValue)
+      document.getElementById("time").innerHTML = timeValue;
 }
