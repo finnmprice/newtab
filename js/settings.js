@@ -1,3 +1,5 @@
+timeFontSize = 16;
+updateTime = true;
 hex = document.getElementById('hex');
 
 chrome.storage.local.get(["rgb"]).then((result) => {
@@ -12,26 +14,47 @@ chrome.storage.local.get(["rgb"]).then((result) => {
     hex.value = rgbToHex(r,g,b);
 });
 
+chrome.storage.local.get(["timeShow"]).then((result) => {
+    if (result.timeShow) {
+      $('#time').fadeIn(100);
+      $('#timeToggle').prop("checked", true);
+    }
+    else {
+      $('#time').hide();
+      $('#timeToggle').prop("checked", false);
+    }
+});
+
+chrome.storage.local.get(["timeFont"]).then((result) => {
+  document.getElementById('time').style.fontSize = result.timeFont + "px";
+  document.getElementById('tslider').value = result.timeFont;
+  document.getElementById('tdisplay').innerHTML = result.timeFont + "px";
+});
+
 rslider = document.getElementById('rslider');
 gslider = document.getElementById('gslider');
 bslider = document.getElementById('bslider');
+tslider = document.getElementById('tslider');
 
 $('#rslider').on('input', function() {
     UpdateValue("r", this.value);
     document.body.style.backgroundColor = "rgb(" + this.value + "," + gslider.value + "," + bslider.value + ")";
-    chrome.storage.local.set({ rgb: [this.value, gslider.value, bslider.value] });
 });
 
 $('#gslider').on('input',function() {
     UpdateValue("g", this.value);
     document.body.style.backgroundColor = "rgb(" + rslider.value + "," + this.value + "," + bslider.value + ")";
-    chrome.storage.local.set({ rgb: [rslider.value, this.value, bslider.value] });
 });
 
 $('#bslider').on('input', function() {
     UpdateValue("b", this.value);
     document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + this.value + ")";
-    chrome.storage.local.set({ rgb: [rslider.value, gslider.value, this.value] });
+});
+
+$('#tslider').on('input', function() {
+  document.getElementById('time').style.fontSize = tslider.value + "px";
+  document.getElementById('tdisplay').innerHTML = tslider.value + "px";
+  chrome.storage.local.set({ timeFont: tslider.value });
 });
 
 hex.onchange = function() {
@@ -49,6 +72,7 @@ function UpdateValue(key, value) {
     document.getElementById(key + 'display').innerHTML = value;
 
     hex.value = rgbToHex(rslider.value, gslider.value, bslider.value);
+    chrome.storage.local.set({ rgb: [rslider.value, gslider.value, bslider.value] });
 }
 
 $(".settingsButton").click(function(){
@@ -66,7 +90,6 @@ $(".randomButton").click(function(){
     UpdateValue("g", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
     UpdateValue("b", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
     document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + bslider.value + ")";
-    chrome.storage.local.set({ rgb: [rslider.value, gslider.value, bslider.value] });
 });
 
 
@@ -80,7 +103,6 @@ function rgbToHex(r, g, b) {
 }
 
 function hexToRgb(hex) {
-  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, function(m, r, g, b) {
     return r + r + g + g + b + b;
@@ -92,4 +114,48 @@ function hexToRgb(hex) {
     g: parseInt(result[2], 16),
     b: parseInt(result[3], 16)
   } : null;
+}
+
+$('#timeToggle').change(function() {
+  if(!this.checked) {
+    // updateTime = false;
+    $('#time').fadeOut(100);
+    chrome.storage.local.set({ timeShow: false });
+  }
+  else {
+    // updateTime = true;
+    $('#time').fadeIn(100);
+    chrome.storage.local.set({ timeShow: true });
+  }
+});
+
+//time
+setTime();
+const timeID = setInterval(setTime, 1000);
+
+function setTime() {
+  var currentTime = new Date();
+    var time = currentTime.getHours() + ":" + currentTime.getMinutes();
+
+    time = time.split(':'); // convert to array
+
+    var hours = Number(time[0]);
+    var minutes = Number(time[1]);
+
+    var timeValue;
+
+    if (hours > 0 && hours <= 12) {
+      timeValue= "" + hours;
+    } else if (hours > 12) {
+      timeValue= "" + (hours - 12);
+    } else if (hours == 0) {
+      timeValue= "12";
+    }
+
+    timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+    document.getElementById("time").innerHTML = timeValue;
+}
+
+function updateTime(bool) {
+  updateTime = bool;
 }

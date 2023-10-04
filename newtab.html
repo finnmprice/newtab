@@ -13,6 +13,7 @@
                 <button id="settingsExit">X</button>
                 <div class="bgcolor">
                     <div class="bgcolorLeft">
+                        <p style="font-size: 12px">background color</p>
                         <div class="r">
                             <label for="r">r </label>
                             <input type="range" id="rslider" name="r" min="0" max="255" />
@@ -37,6 +38,15 @@
                         </button>
                     </div>
                 </div>
+                <div class="timeText">
+                    <p style="font-size: 12px;;">time</p>
+                    <label class="switch">
+                        <input id="timeToggle" type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <input type="range" id="tslider" name="t" step="1" min="0" max="128" />
+                <p id="tdisplay"></p>
             </div>
         </div>
         
