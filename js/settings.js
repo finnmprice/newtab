@@ -170,8 +170,18 @@ $('#searchToggle').change(function() {
 
 $('#searchInput').on('keypress', function (e) {
   val = $('#searchInput').val();
+
   if((e.which === 13) && (val.replace(/\s/g, "").length > 0)) {
-    if(val == "ppsbathrooms" || val == "pps bathrooms") {
+
+    if(validURL(val)) {
+      if(val.includes("http")) {
+        window.location.href = val;
+      }
+      else {
+        window.location.href = "https://" + val;
+      }
+    }
+    else if(val == "ppsbathrooms" || val == "pps bathrooms") {
       window.location.href = "https://ppsbathrooms.org";
     }
     else {
@@ -196,6 +206,15 @@ $("#clearSearch").click(function() {
     $('#searchInput').focus();
 });
 
+function validURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
 
 //time
 
