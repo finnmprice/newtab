@@ -1,6 +1,4 @@
-timeFontSize = 16;
-hex = document.getElementById('hex');
-
+//storage
 chrome.storage.local.get(["rgb"]).then((result) => {
   rgb = result.rgb;
   if (rgb == undefined)
@@ -36,6 +34,22 @@ chrome.storage.local.get(["timeFont"]).then((result) => {
   document.getElementById('tdisplay').innerHTML = timeFont + "px";
 });
 
+chrome.storage.local.get(["searchShow"]).then((result) => {
+  searchShow = result.searchShow;
+  if (searchShow == undefined)
+    searchShow = true;
+  if (searchShow) {
+    $('.search').fadeIn(100);
+    $('#searchToggle').prop("checked", true);
+  }
+  else {
+    $('.search').hide();
+    $('#searchToggle').prop("checked", false);
+  }
+});
+
+//sliders
+
 rslider = document.getElementById('rslider');
 gslider = document.getElementById('gslider');
 bslider = document.getElementById('bslider');
@@ -62,6 +76,8 @@ $('#tslider').on('input', function() {
   chrome.storage.local.set({ timeFont: tslider.value });
 });
 
+hex = document.getElementById('hex');
+
 hex.onchange = function() {
     document.body.style.backgroundColor = hex.value;
     hexValue = hexToRgb(hex.value);
@@ -80,6 +96,8 @@ function UpdateValue(key, value) {
     chrome.storage.local.set({ rgb: [rslider.value, gslider.value, bslider.value] });
 }
 
+//settings
+
 $(".settingsButton").click(function(){
   $(".settings").fadeToggle(75);
 });
@@ -88,6 +106,7 @@ $("#settingsExit").click(function(){
   $(".settings").fadeOut(75);
 });
 
+//randomize color
 
 $(".randomButton").click(function(){
     number = randomInt(50,150);
@@ -99,20 +118,11 @@ $(".randomButton").click(function(){
 });
 
 
-
-function printColor(ev) {
-  const color = ev.target.value
-  const r = parseInt(color.substr(1,2), 16)
-  const g = parseInt(color.substr(3,2), 16)
-  const b = parseInt(color.substr(5,2), 16)
-  console.log(`red: ${r}, green: ${g}, blue: ${b}`)
-}
-
-
 function randomInt(min, max) { 
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+//hex
 
 function rgbToHex(r, g, b) {
   return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
@@ -132,6 +142,8 @@ function hexToRgb(hex) {
   } : null;
 }
 
+//toggle time
+
 $('#timeToggle').change(function() {
   if(!this.checked) {
     $('#time').fadeOut(100);
@@ -143,7 +155,50 @@ $('#timeToggle').change(function() {
   }
 });
 
+//search
+
+$('#searchToggle').change(function() {
+  if(!this.checked) {
+    $('.search').fadeOut(100);
+    chrome.storage.local.set({ searchShow: false });
+  }
+  else {
+    $('.search').fadeIn(100);
+    chrome.storage.local.set({ searchShow: true });
+  }
+});
+
+$('#searchInput').on('keypress', function (e) {
+  val = $('#searchInput').val();
+  if((e.which === 13) && (val.replace(/\s/g, "").length > 0)) {
+    if(val == "ppsbathrooms" || val == "pps bathrooms") {
+      window.location.href = "https://ppsbathrooms.org";
+    }
+    else {
+      window.location.href = ("https://duckduckgo.com/?q=" + $('#searchInput').val());
+    }
+  }
+});
+
+$('#searchInput').on('input', function() {
+    val = $('#searchInput').val();
+    if(val != "") {
+      $('#clearSearch').show();
+    }
+    else {
+      $('#clearSearch').hide();
+    }
+});
+
+$("#clearSearch").click(function() {
+    $('#searchInput').val("");
+    $('#clearSearch').hide();
+    $('#searchInput').focus();
+});
+
+
 //time
+
 setTime();
 const timeID = setInterval(setTime, 1000);
 

@@ -40,10 +40,11 @@ body {
     position: absolute;
     background-color: #111;
     width: 370px;
-    height: 290px;
-    top: 80px;
+    height: 350px;
+    top: 100px;
     border-radius: 10px;
     font-family: monospace;
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, .2);
     display: none;
 }
 
@@ -178,9 +179,6 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 5px;
 }
 
-
-
-
 .switch {
     position: relative;
     display: inline-block;
@@ -241,4 +239,56 @@ input:checked+.slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+.search {
+    margin-top: 300px;
+    display: flex;
+    background-color: #323233;
+    width: 500px;
+    height: 35px;
+    border-radius: 5px;
+    border: .5px solid rgba(0, 0, 0, .2);
+
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, .2);
+}
+
+.search input {
+    all: unset;
+    width: 475px;
+    border: none;
+    padding: 0;
+    background: none;
+    color: #ccc;
+    padding: 3px;
+    
+    margin-left: 10px;
+}
+
+#searchIcon {
+    margin: 0px;
+    margin-right: 10px;
+    width:  18px;
+    height: 18px;
+}
+
+#clearSearch {
+    display: none;
+    margin: 0px;
+    padding: 0px;
+    text-decoration: none;
+    border: none;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+#clearSearch img {
+    width:  24px;
+    height: 24px;
+
+    margin-right: 3px;
 }

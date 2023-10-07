@@ -7,6 +7,14 @@
 <body id="body">
     <p id="time"></p>
     <div class="center">
+        <div class="search">
+            <input type="text" id="searchInput" autofocus>
+                <button id="clearSearch">
+                    <img src="/icons/x.svg"></img>
+                </button>
+                <img id="searchIcon" src="/icons/search.svg"></img>
+            </input>
+        </div>
         <div class="settings">
             <div class="settingsInternal">
                 <p style="display: inline-block; margin: 0;">settings</p>
@@ -39,7 +47,7 @@
                     </div>
                 </div>
                 <div class="timeText">
-                    <p style="font-size: 12px;;">time</p>
+                    <p style="font-size: 12px;">time</p>
                     <label class="switch">
                         <input id="timeToggle" type="checkbox" checked>
                         <span class="slider round"></span>
@@ -47,6 +55,13 @@
                 </div>
                 <input type="range" id="tslider" name="t" step="1" min="0" max="128" />
                 <p id="tdisplay"></p>
+                <div class="searchSettings">
+                    <p style="font-size: 12px;">search</p>
+                    <label class="switch">
+                        <input id="searchToggle" type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
         </div>
         
