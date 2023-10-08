@@ -174,7 +174,7 @@ $('#searchInput').on('keypress', function (e) {
   if((e.which === 13) && (val.replace(/\s/g, "").length > 0)) {
 
     if(validURL(val)) {
-      if(val.includes("http")) {
+      if(val.toLowerCase().includes("http")) {
         window.location.href = val;
       }
       else {
