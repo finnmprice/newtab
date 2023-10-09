@@ -40,7 +40,7 @@ body {
     position: absolute;
     background-color: #111;
     width: 370px;
-    height: 350px;
+    height: 380px;
     top: 100px;
     border-radius: 10px;
     font-family: monospace;
@@ -57,7 +57,7 @@ body {
     font-size: 16px;
 }
 
-#rdisplay, #gdisplay, #bdisplay, #tdisplay {
+#rdisplay, #gdisplay, #bdisplay, #tdisplay, #ydisplay {
     display: inline-block;
     margin: 10px;
 }
@@ -242,17 +242,15 @@ input:checked+.slider:before {
 }
 
 .search {
-    margin-top: 300px;
+    position: absolute;
     display: flex;
     background-color: #323233;
     width: 500px;
     height: 35px;
     border-radius: 5px;
     border: .5px solid rgba(0, 0, 0, .2);
-
     align-items: center;
     justify-content: center;
-
     box-shadow: 1px 2px 2px rgba(0, 0, 0, .2);
 }
 

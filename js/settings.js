@@ -48,12 +48,22 @@ chrome.storage.local.get(["searchShow"]).then((result) => {
   }
 });
 
+chrome.storage.local.get(["searchY"]).then((result) => {
+  searchY = result.searchY
+  if (result.searchY == undefined)
+    searchY = 50;
+  $('.search').css('margin-top',searchY + "vh");
+  document.getElementById('yslider').value = searchY;
+  document.getElementById('ydisplay').innerHTML = searchY + "%";
+});
+
 //sliders
 
 rslider = document.getElementById('rslider');
 gslider = document.getElementById('gslider');
 bslider = document.getElementById('bslider');
 tslider = document.getElementById('tslider');
+yslider = document.getElementById('yslider');
 
 $('#rslider').on('input', function() {
     UpdateValue("r", this.value);
@@ -71,9 +81,16 @@ $('#bslider').on('input', function() {
 });
 
 $('#tslider').on('input', function() {
-  document.getElementById('time').style.fontSize = tslider.value + "px";
-  document.getElementById('tdisplay').innerHTML = tslider.value + "px";
-  chrome.storage.local.set({ timeFont: tslider.value });
+  document.getElementById('time').style.fontSize = this.value + "px";
+  document.getElementById('tdisplay').innerHTML = this.value + "px";
+  chrome.storage.local.set({ timeFont: this.value });
+});
+
+$('#yslider').on('input', function() {
+  console.log(this.value);
+  $('.search').css('margin-top',this.value + "vh");
+  document.getElementById('ydisplay').innerHTML = this.value + "%";
+  chrome.storage.local.set({ searchY: this.value });
 });
 
 hex = document.getElementById('hex');
