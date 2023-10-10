@@ -57,6 +57,15 @@ chrome.storage.local.get(["searchY"]).then((result) => {
   document.getElementById('ydisplay').innerHTML = searchY + "%";
 });
 
+chrome.storage.local.get(["engine"]).then((result) => {
+  engine = result.engine
+  if (result.engine == undefined)
+    searchY = "duck";
+  $('.search').css('margin-top',searchY + "vh");
+  document.getElementById('yslider').value = searchY;
+  document.getElementById('ydisplay').innerHTML = searchY + "%";
+});
+
 //sliders
 
 rslider = document.getElementById('rslider');
@@ -232,6 +241,11 @@ function validURL(str) {
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return !!pattern.test(str);
 }
+
+$('#engines').on('input', function() {
+  console.log(this.value);
+  chrome.storage.local.set({ engine: this.value });
+});
 
 //time
 

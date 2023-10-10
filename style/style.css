@@ -40,12 +40,12 @@ body {
     position: absolute;
     background-color: #111;
     width: 370px;
-    height: 380px;
+    height: 430px;
     top: 100px;
     border-radius: 10px;
     font-family: monospace;
     box-shadow: 1px 2px 2px rgba(0, 0, 0, .2);
-    display: none;
+    /* display: none; */
 }
 
 .settingsInternal {
@@ -289,4 +289,17 @@ input:checked+.slider:before {
     height: 24px;
 
     margin-right: 3px;
+}
+
+#engines {
+    background: none;
+    color: #fff;
+    font-family: monospaceNew;
+    border: none;
+}
+
+#engines option {
+    background-color: #111;
+    border: none;
+    border-radius: 5px;
 }
