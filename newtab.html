@@ -5,7 +5,9 @@
     <script src="/thirdParty/jquery.min.js"></script>
 </head>
 <body id="body">
-    <p id="time"></p>
+    <div class="timeContainer">
+        <p id="time"></p>
+    </div>
     <div class="center">
         <div class="search">
             <input type="text" id="searchInput" autofocus>
@@ -55,6 +57,23 @@
                 </div>
                 <input type="range" id="tslider" name="t" step="1" min="0" max="128" />
                 <p id="tdisplay"></p>
+                <div class="timeLocation">
+                    <div>
+                        <button class="button1"></button>
+                        <button class="button2"></button>
+                        <button class="button3" id="selectedButton"></button>
+                    </div>
+                    <div>
+                        <button class="button4"></button>
+                        <button class="button5"></button>
+                        <button class="button6"></button>
+                    </div>
+                    <div>
+                        <button class="button7"></button>
+                        <button class="button8"></button>
+                        <button class="button9"></button>
+                    </div>
+                </div>
                 <div class="searchSettings">
                     <p style="font-size: 12px;">search</p>
                     <label class="switch">
@@ -62,7 +81,7 @@
                         <span class="slider round"></span>
                     </label><br>
                     <label for="y">y </label>
-                    <input type="range" id="yslider" name="y" min="0" max="70" step="1"/>
+                    <input type="range" id="yslider" name="y" min="5" max="95" step="1"/>
                     <p id="ydisplay"></p><br></br>
                     <label style="font-size: 14px;" for="searchEngine">engine </label>
                     <select name="searchEngines" id="engines">

@@ -58,10 +58,17 @@ chrome.storage.local.get(["searchY"]).then((result) => {
 });
 
 chrome.storage.local.get(["engine"]).then((result) => {
-  engine = result.engine
+  engine = result.engine;
   if (result.engine == undefined)
     searchY = "duck";
   $("#engines").val(engine);
+});
+
+chrome.storage.local.get(["buttonPosition"]).then((result) => {
+  position = result.buttonPosition;
+  if (result.position == undefined)
+    searchY = 3;
+  setButtonLocation(position);
 });
 
 //sliders
@@ -259,7 +266,6 @@ function getEngine() {
 }
 
 
-
 //time
 
 setTime();
@@ -287,4 +293,79 @@ function setTime() {
     timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
     if(document.getElementById("time").innerHTML !== timeValue)
       document.getElementById("time").innerHTML = timeValue;
+}
+
+
+//time buttons
+$(".button1, .button2, .button3, .button4, .button5, .button6, .button7, .button8, .button9").click(function() {
+  var position = $(this).attr("class").replace('button','');
+  setButtonLocation(position);
+});
+
+function setButtonLocation(buttonClass) {
+  if(buttonClass == 1)
+  $(".timeContainer").css({
+    "justify-content":"left",
+    "align-items":"start"
+  });
+  else if(buttonClass == 2)
+  $(".timeContainer").css({
+    "justify-content":"center",
+    "align-items":"start"
+  });
+  else if(buttonClass == 3)
+  $(".timeContainer").css({
+    "justify-content":"right",
+    "align-items":"start"
+  });
+  else if(buttonClass == 4)
+  $(".timeContainer").css({
+    "justify-content":"left",
+    "align-items":"center"
+  });
+  else if(buttonClass == 5)
+  $(".timeContainer").css({
+    "justify-content":"center",
+    "align-items":"center",
+  });
+  else if(buttonClass == 6)
+  $(".timeContainer").css({
+    "justify-content":"right",
+    "align-items":"center"
+  });
+  else if(buttonClass == 7)
+  $(".timeContainer").css({
+    "justify-content":"left",
+    "align-items":"flex-end",
+  });
+  else if(buttonClass == 8)
+  $(".timeContainer").css({
+    "justify-content":"center",
+    "align-items":"flex-end"
+  });
+  else if(buttonClass == 9) 
+  $(".timeContainer").css({
+    "justify-content":"right",
+    "align-items":"flex-end"
+  });
+
+  if(buttonClass == 9) {
+    $("#time").css({
+      "margin-right":"40px"
+    });
+  }
+  else {
+    $("#time").css({
+      "margin-right":"10px"
+    });
+  }
+
+  for (let i = 1; i < 10; i++) {
+    $('.button' + i).removeAttr('id');
+  }
+
+  $(".button" + buttonClass).prop('id', 'selectedButton');
+
+
+    chrome.storage.local.set({ buttonPosition: buttonClass });
 }
