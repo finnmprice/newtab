@@ -61,9 +61,7 @@ chrome.storage.local.get(["engine"]).then((result) => {
   engine = result.engine
   if (result.engine == undefined)
     searchY = "duck";
-  $('.search').css('margin-top',searchY + "vh");
-  document.getElementById('yslider').value = searchY;
-  document.getElementById('ydisplay').innerHTML = searchY + "%";
+  $("#engines").val(engine);
 });
 
 //sliders
@@ -211,7 +209,7 @@ $('#searchInput').on('keypress', function (e) {
       window.location.href = "https://ppsbathrooms.org";
     }
     else {
-      window.location.href = ("https://duckduckgo.com/?q=" + $('#searchInput').val());
+      window.location.href = (getEngine() + $('#searchInput').val());
     }
   }
 });
@@ -246,6 +244,21 @@ $('#engines').on('input', function() {
   console.log(this.value);
   chrome.storage.local.set({ engine: this.value });
 });
+
+
+function getEngine() {
+  engine = $('#engines :selected').val();
+  var engineText;
+  engineText = (engine == "duck") ? "https://duckduckgo.com/?q=" : engineText;
+  engineText = (engine == "google") ? "https://www.google.com/search?q=" : engineText;
+  engineText = (engine == "brave") ? "https://search.brave.com/search?q=" : engineText;
+  engineText = (engine == "bing") ? "https://www.bing.com/search?q=" : engineText;
+  engineText = (engine == "yahoo") ? "https://search.yahoo.com/search?p=" : engineText;
+
+  return engineText;
+}
+
+
 
 //time
 
