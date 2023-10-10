@@ -60,14 +60,14 @@ chrome.storage.local.get(["searchY"]).then((result) => {
 chrome.storage.local.get(["engine"]).then((result) => {
   engine = result.engine;
   if (result.engine == undefined)
-    searchY = "duck";
+    engine = "duck";
   $("#engines").val(engine);
 });
 
 chrome.storage.local.get(["buttonPosition"]).then((result) => {
   position = result.buttonPosition;
   if (result.position == undefined)
-    searchY = 3;
+    position = 3;
   setButtonLocation(position);
 });
 
