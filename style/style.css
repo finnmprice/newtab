@@ -71,18 +71,41 @@ body {
     margin: 10px;
 }
 
-.settingsButton {
+.settingsHover {
     position: absolute;
-    right: 15px;
-    bottom: 15px;
+    right:  -400px;
+    bottom: -400px;
+    width: 800px;
+    height: 800px;
+    border-radius: 800px;
 }
 
-.settingsButton img {
+.settingsHover:hover ~ #settingsButton {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+#settingsButton:hover {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+#settingsButton {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+#settingsButton img {
     width:  24px;
     height: 24px;
 }
 
-.settingsButton button {
+#settingsButton {
     margin: 0px;
     padding: 0px;
     text-decoration: none;

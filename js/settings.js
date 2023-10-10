@@ -129,7 +129,7 @@ function UpdateValue(key, value) {
 
 //settings
 
-$(".settingsButton").click(function(){
+$("#settingsButton").click(function(){
   $(".settings").fadeToggle(75);
 });
 
