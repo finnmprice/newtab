@@ -28,14 +28,14 @@ chrome.storage.local.get(["timeShow"]).then((result) => {
 chrome.storage.local.get(["timeFont"]).then((result) => {
   timeFont = result.timeFont
   if (result.timeFont == undefined)
-    timeFont = 64;
+    timeFont = 42;
   document.getElementById('time').style.fontSize = timeFont + "px";
   document.getElementById('tslider').value = timeFont;
   document.getElementById('tdisplay').innerHTML = timeFont + "px";
 });
 
 chrome.storage.local.get(["searchShow"]).then((result) => {
-  searchShow = result.searchShow;
+  searchShow = result.searchShow; 
   if (searchShow == undefined)
     searchShow = true;
   if (searchShow) {
@@ -200,9 +200,9 @@ $('#searchToggle').change(function() {
 });
 
 $('#searchInput').on('keypress', function (e) {
-  val = $('#searchInput').val();
 
   if((e.which === 13) && (val.replace(/\s/g, "").length > 0)) {
+  val = $('#searchInput').val();
 
     if(validURL(val)) {
       if(val.toLowerCase().includes("http")) {
@@ -219,6 +219,12 @@ $('#searchInput').on('keypress', function (e) {
       window.location.href = (getEngine() + $('#searchInput').val());
     }
   }
+});
+
+$(document).on('keyup',function(evt) {
+    if (evt.keyCode == 27) {
+      $(".settings").fadeOut(10);
+    }
 });
 
 $('#searchInput').on('input', function() {
