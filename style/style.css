@@ -87,7 +87,7 @@ body {
 }
 #settingsButton:hover {
     visibility: visible;
-    opacity: 1;
+    opacity: .5;
     transition: opacity 0.5s, visibility 0.5s;
 }
 

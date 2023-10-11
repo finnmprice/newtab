@@ -27,7 +27,7 @@ chrome.storage.local.get(["timeShow"]).then((result) => {
 
 chrome.storage.local.get(["timeFont"]).then((result) => {
   timeFont = result.timeFont
-  if (result.timeFont == undefined)
+  if (timeFont == undefined)
     timeFont = 42;
   document.getElementById('time').style.fontSize = timeFont + "px";
   document.getElementById('tslider').value = timeFont;
@@ -50,7 +50,7 @@ chrome.storage.local.get(["searchShow"]).then((result) => {
 
 chrome.storage.local.get(["searchY"]).then((result) => {
   searchY = result.searchY
-  if (result.searchY == undefined)
+  if (searchY == undefined)
     searchY = 50;
   $('.search').css('margin-top',searchY + "vh");
   document.getElementById('yslider').value = searchY;
@@ -59,14 +59,14 @@ chrome.storage.local.get(["searchY"]).then((result) => {
 
 chrome.storage.local.get(["engine"]).then((result) => {
   engine = result.engine;
-  if (result.engine == undefined)
+  if (engine == undefined)
     engine = "duck";
   $("#engines").val(engine);
 });
 
 chrome.storage.local.get(["buttonPosition"]).then((result) => {
   position = result.buttonPosition;
-  if (result.position == undefined)
+  if (position == undefined)
     position = 3;
   setButtonLocation(position);
 });
@@ -356,13 +356,25 @@ function setButtonLocation(buttonClass) {
   });
 
   if(buttonClass == 9) {
-    $("#time").css({
-      "margin-right":"40px"
+    $(".settingsHover").css({
+      "left":  "-400px",
+      "right": "auto"
+    });
+    $("#settingsButton").css({
+      "right":"auto",
+      "left":"15px"
     });
   }
+
   else {
-    $("#time").css({
-      "margin-right":"10px"
+    $(".settingsHover").css({
+      "position":"absolute",
+      "left": "auto",
+      "right":"-400px"
+    });
+    $("#settingsButton").css({
+      "right":"15px",
+      "left":"auto"
     });
   }
 
@@ -372,6 +384,5 @@ function setButtonLocation(buttonClass) {
 
   $(".button" + buttonClass).prop('id', 'selectedButton');
 
-
-    chrome.storage.local.set({ buttonPosition: buttonClass });
+  chrome.storage.local.set({ buttonPosition: buttonClass });
 }
