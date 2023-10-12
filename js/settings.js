@@ -52,7 +52,7 @@ chrome.storage.local.get(["searchY"]).then((result) => {
   searchY = result.searchY
   if (searchY == undefined)
     searchY = 50;
-  $('.search').css('margin-top',searchY + "vh");
+  $('.search').css('margin-top',searchY -2 + "vh");
   document.getElementById('yslider').value = searchY;
   document.getElementById('ydisplay').innerHTML = searchY + "%";
 });
@@ -69,6 +69,15 @@ chrome.storage.local.get(["buttonPosition"]).then((result) => {
   if (position == undefined)
     position = 3;
   setButtonLocation(position);
+});
+
+chrome.storage.local.get(["font"]).then((result) => {
+  font = result.font;
+  if (font == undefined)
+    font = "monospace";
+  $('#time').css("font-family", font);
+  $("#fonts").val(font);
+  console.log(font);
 });
 
 //sliders
@@ -186,6 +195,11 @@ $('#timeToggle').change(function() {
   }
 });
 
+$('#fonts').on('input', function() {
+    $('#time').css("font-family", $(this).val());
+    chrome.storage.local.set({ font: $(this).val()});
+});
+
 //search
 
 $('#searchToggle').change(function() {
@@ -270,7 +284,6 @@ function getEngine() {
 
   return engineText;
 }
-
 
 //time
 

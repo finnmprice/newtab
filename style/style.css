@@ -1,6 +1,30 @@
 @font-face {
     font-family: monospaceNew;
-    src: url(./monospace.ttf);
+    src: url(./fonts/monospace.ttf);
+}
+@font-face {
+    font-family: helveticaBold;
+    src: url(./fonts/helveticaBold.ttf);
+}
+@font-face {
+    font-family: simpletix;
+    src: url(./fonts/simpletix.otf);
+}
+@font-face {
+    font-family: alarmclock;
+    src: url(./fonts/alarmclock.ttf);
+}
+@font-face {
+    font-family: romanica;
+    src: url(./fonts/romanica.ttf);
+}
+@font-face {
+    font-family: roboto;
+    src: url(./fonts/roboto.ttf);
+}
+@font-face {
+    font-family: bebasneue;
+    src: url(./fonts/bebasneue.ttf);
 }
 
 body {
@@ -48,7 +72,7 @@ body {
     position: absolute;
     background-color: #111;
     width: 370px;
-    height: 500px;
+    height: 530px;
     top: 100px;
     border-radius: 10px;
     font-family: monospace;
@@ -323,14 +347,14 @@ input:checked+.slider:before {
     margin-right: 3px;
 }
 
-#engines {
+#engines, #fonts {
     background: none;
     color: #fff;
     font-family: monospaceNew;
     border: none;
 }
 
-#engines option {
+#engines, #fonts option {
     background-color: #111;
     border: none;
 }
