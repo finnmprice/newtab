@@ -1,14 +1,14 @@
 {
     "name": "Simple New Tab",
     "description": "A simple new tab page.",
-    "version": "1.14",
+    "version": "1.15",
     "chrome_url_overrides": {
         "newtab": "newtab.html"
     },
     "icons": {
-        "128": "images/icon128.png",
-        "256": "images/icon256.png",
-        "512": "images/icon512.png"
+        "128": "style/images/icon128.png",
+        "256": "style/images/icon256.png",
+        "512": "style/images/icon512.png"
     },
     "incognito": "split",
     "permissions": [
