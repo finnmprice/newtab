@@ -74,7 +74,7 @@ chrome.storage.local.get(["buttonPosition"]).then((result) => {
 chrome.storage.local.get(["font"]).then((result) => {
   font = result.font;
   if (font == undefined)
-    font = "monospace";
+    font = "forzan";
   $('#time').css("font-family", font);
   $("#fonts").val(font);
   console.log(font);
@@ -214,9 +214,18 @@ $('#searchToggle').change(function() {
 });
 
 $('#searchInput').on('keypress', function (e) {
+  if((e.which === 13)) {
+    search();
+  }
+});
 
-  if((e.which === 13) && (val.replace(/\s/g, "").length > 0)) {
-  val = $('#searchInput').val();
+$("#searchIcon").click(function() {
+  search();
+});
+
+function search() {
+  if((val.replace(/\s/g, "").length > 0)) {
+    val = $('#searchInput').val();
 
     if(validURL(val)) {
       if(val.toLowerCase().includes("http")) {
@@ -233,7 +242,7 @@ $('#searchInput').on('keypress', function (e) {
       window.location.href = (getEngine() + $('#searchInput').val());
     }
   }
-});
+}
 
 $(document).on('keyup',function(evt) {
     if (evt.keyCode == 27) {
@@ -245,9 +254,11 @@ $('#searchInput').on('input', function() {
     val = $('#searchInput').val();
     if(val != "") {
       $('#clearSearch').show();
+      $("#searchIcon").css('cursor','pointer');
     }
     else {
       $('#clearSearch').hide();
+      $("#searchIcon").css('cursor','default');
     }
 });
 

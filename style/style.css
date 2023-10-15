@@ -26,6 +26,14 @@
     font-family: bebasneue;
     src: url(./fonts/bebasneue.ttf);
 }
+@font-face {
+    font-family: nexas;
+    src: url(./fonts/nexas.ttf);
+}
+@font-face {
+    font-family: forzan;
+    src: url(./fonts/forzan.ttf);
+}
 
 body {
     background-color: rgb(50, 54, 57);
@@ -71,12 +79,12 @@ body {
 .settings {
     position: absolute;
     background-color: #111;
-    width: 370px;
-    height: 530px;
+    width: 375px;
+    height: 520px;
     top: 100px;
     border-radius: 10px;
-    font-family: monospace;
     z-index: 999;
+    font-family: monospaceNew;
     box-shadow: 1px 2px 2px rgba(0, 0, 0, .2);
     display: none;
 }
@@ -106,13 +114,13 @@ body {
 
 .settingsHover:hover ~ #settingsButton {
     visibility: visible;
-    opacity: 1;
+    opacity: .75;
     transition: opacity 0.5s, visibility 0.5s;
 }
 #settingsButton:hover {
     visibility: visible;
-    opacity: .5;
-    transition: opacity 0.5s, visibility 0.5s;
+    opacity: 1;
+    transition: opacity 0.25s, visibility 0.25s;
 }
 
 #settingsButton {
@@ -121,12 +129,12 @@ body {
     right: 15px;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.5s, visibility 0.5s;
+    transition: opacity 1s, visibility 1s;
 }
 
 #settingsButton img {
-    width:  24px;
-    height: 24px;
+    width:  20px;
+    height: 20px;
 }
 
 #settingsButton {
@@ -217,10 +225,10 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .randomButton img {
-    width:  24px;
-    height: 24px;
+    width:  20px;
+    height: 20px;
 
-    margin-top: -17px;
+    margin-top: -15px;
     position: absolute;
 }
 
@@ -326,8 +334,9 @@ input:checked+.slider:before {
 #searchIcon {
     margin: 0px;
     margin-right: 10px;
-    width:  18px;
-    height: 18px;
+    width:  14px;
+    height: 14px;
+    opacity: .9;
 }
 
 #clearSearch {
@@ -342,9 +351,14 @@ input:checked+.slider:before {
 }
 
 #clearSearch img {
-    width:  24px;
-    height: 24px;
-    margin-right: 3px;
+    width:  20px;
+    height: 20px;
+    margin-right: 5px;
+    opacity: .75;
+}
+
+#clearSearch img:hover {
+    opacity: 1;
 }
 
 #engines, #fonts {
@@ -358,6 +372,7 @@ input:checked+.slider:before {
     background-color: #111;
     border: none;
 }
+
 
 select {
     padding: 5px;
@@ -377,4 +392,12 @@ select {
 
 #selectedButton {
     background-color: #888;
+}
+
+#githubIcon img{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
 }

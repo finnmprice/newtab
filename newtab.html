@@ -20,7 +20,7 @@
         <div class="settings">
             <div class="settingsInternal">
                 <p style="display: inline-block; margin: 0;">settings</p>
-                <button id="settingsExit"><img src="/icons/x.svg" style="width: 32px; height:32px;"></img></button>
+                <button id="settingsExit"><img src="/icons/x.svg" style="width: 20px; height:20px;"></img></button>
                 <div class="bgcolor">
                     <div class="bgcolorLeft">
                         <p style="font-size: 12px">background color</p>
@@ -74,10 +74,12 @@
                         <button class="button9"></button>
                     </div>
                 </div>
-                <label style="font-size: 14px;" for="searchEngine">font </label>
+                <label style="font-size: 12px;" for="searchEngine">font </label>
                 <select name="fonts" id="fonts">
+                    <option value="forzan">forzan </option>
                     <option value="monospaceNew">monospace </option>
                     <option value="helveticabold">helvetica </option>
+                    <option value="nexas">nexas </option>
                     <option value="simpletix">simpletix </option>
                     <option value="alarmclock">alarm clock </option>
                     <option value="romanica">romanica </option>
@@ -93,16 +95,17 @@
                     <label for="y">y </label>
                     <input type="range" id="yslider" name="y" min="5" max="95" step="1"/>
                     <p id="ydisplay"></p><br></br>
-                    <label style="font-size: 14px;" for="searchEngine">engine </label>
+                    <label style="font-size: 12px;" for="searchEngine">engine </label>
                     <select name="searchEngines" id="engines">
-                        <option value="duck">DuckDuckGo </option>
-                        <option value="google">Google </option>
-                        <option value="brave">Brave </option>
-                        <option value="bing">Bing </option>
-                        <option value="yahoo">Yahoo </option>
+                        <option value="duck">duckDuckGo </option>
+                        <option value="google">google </option>
+                        <option value="brave">brave </option>
+                        <option value="bing">bing </option>
+                        <option value="yahoo">yahoo </option>
                     </select>
                 </div>
             </div>
+            <a id="githubIcon" href="https://github.com/finnmprice/newtab" target="_blank"><img src="icons/github.svg"></img></a>
         </div>
         
         <div class="settingsHover"></div>
