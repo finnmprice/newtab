@@ -127,6 +127,7 @@ body {
     position: absolute;
     bottom: 15px;
     right: 15px;
+    filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.75));
     visibility: hidden;
     opacity: 0;
     transition: opacity 1s, visibility 1s;
