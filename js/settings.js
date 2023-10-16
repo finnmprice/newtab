@@ -286,12 +286,23 @@ $('#engines').on('input', function() {
 
 function getEngine() {
   engine = $('#engines :selected').val();
-  var engineText;
-  engineText = (engine == "duck") ? "https://duckduckgo.com/?q=" : engineText;
-  engineText = (engine == "google") ? "https://www.google.com/search?q=" : engineText;
-  engineText = (engine == "brave") ? "https://search.brave.com/search?q=" : engineText;
-  engineText = (engine == "bing") ? "https://www.bing.com/search?q=" : engineText;
-  engineText = (engine == "yahoo") ? "https://search.yahoo.com/search?p=" : engineText;
+  switch(engine) {
+    case "duck":
+      engineText = "https://duckduckgo.com/?q=";
+      break;
+    case "google":
+      engineText = "https://www.google.com/search?q=";
+      break;
+    case "brave":
+      engineText = "https://search.brave.com/search?q=";
+      break;
+    case "bing":
+      engineText = "https://www.bing.com/search?q=";
+      break;
+    case "yahoo":
+      engineText = "https://search.yahoo.com/search?p=";
+      break;
+    }
 
   return engineText;
 }
