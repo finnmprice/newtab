@@ -80,7 +80,7 @@ body {
     position: absolute;
     background-color: #111;
     width: 375px;
-    height: 520px;
+    height: 550px;
     top: 100px;
     border-radius: 10px;
     z-index: 999;
@@ -401,4 +401,16 @@ select {
     position: absolute;
     right: 15px;
     bottom: 15px;
+}
+
+.timeModeText {
+    display: inline-block;
+    margin: 0;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+#timeModeSlider {
+    top: -10px;
+    bottom: 10px;
 }

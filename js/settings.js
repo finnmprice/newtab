@@ -1,3 +1,5 @@
+var hourMode = false;
+
 //storage
 chrome.storage.local.get(["rgb"]).then((result) => {
   rgb = result.rgb;
@@ -77,7 +79,14 @@ chrome.storage.local.get(["font"]).then((result) => {
     font = "forzan";
   $('#time').css("font-family", font);
   $("#fonts").val(font);
-  console.log(font);
+});
+
+chrome.storage.local.get(["hourMode"]).then((result) => {
+  hourMode = result.hourMode;
+  if (hourMode == undefined)
+    font = "true";
+  $('#timeMode').prop("checked", hourMode); 
+  setTime();
 });
 
 //sliders
@@ -110,7 +119,6 @@ $('#tslider').on('input', function() {
 });
 
 $('#yslider').on('input', function() {
-  console.log(this.value);
   $('.search').css('margin-top',this.value + "vh");
   document.getElementById('ydisplay').innerHTML = this.value + "%";
   chrome.storage.local.set({ searchY: this.value });
@@ -279,8 +287,7 @@ function validURL(str) {
 }
 
 $('#engines').on('input', function() {
-  console.log(this.value);
-  chrome.storage.local.set({ engine: this.value });
+ chrome.storage.local.set({ engine: this.value });
 });
 
 
@@ -315,26 +322,38 @@ const timeID = setInterval(setTime, 1000);
 function setTime() {
   var currentTime = new Date();
     var time = currentTime.getHours() + ":" + currentTime.getMinutes();
-
     time = time.split(':');
 
     var hours = Number(time[0]);
     var minutes = Number(time[1]);
 
-    var timeValue;
+    if(!hourMode) {
+      var timeValue;
 
-    if (hours > 0 && hours <= 12) {
-      timeValue = "" + hours;
-    } else if (hours > 12) {
-      timeValue = "" + (hours - 12);
-    } else if (hours == 0) {
-      timeValue = "12";
+      if (hours > 0 && hours <= 12) {
+        timeValue = "" + hours;
+      } else if (hours > 12) {
+        timeValue = "" + (hours - 12);
+      } else if (hours == 0) {
+        timeValue = "12";
+      }
+      timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
+    }
+    else {
+      minutes = minutes.toString().length == 1 ? "0" + minutes : minutes;
+      timeValue = hours + ":" + minutes;
+    }
+    if(document.getElementById("time").innerHTML !== timeValue) {
+      document.getElementById("time").innerHTML = timeValue;
     }
 
-    timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
-    if(document.getElementById("time").innerHTML !== timeValue)
-      document.getElementById("time").innerHTML = timeValue;
-}
+  }
+
+$('#timeMode').change(function() {
+  hourMode = this.checked;
+  chrome.storage.local.set({ hourMode: this.checked });
+  setTime();
+});
 
 
 //time buttons
