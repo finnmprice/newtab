@@ -363,73 +363,26 @@ $(".button1, .button2, .button3, .button4, .button5, .button6, .button7, .button
 });
 
 function setButtonLocation(buttonClass) {
-  if(buttonClass == 1)
-  $(".timeContainer").css({
-    "justify-content":"left",
-    "align-items":"start"
-  });
-  else if(buttonClass == 2)
-  $(".timeContainer").css({
-    "justify-content":"center",
-    "align-items":"start"
-  });
-  else if(buttonClass == 3)
-  $(".timeContainer").css({
-    "justify-content":"right",
-    "align-items":"start"
-  });
-  else if(buttonClass == 4)
-  $(".timeContainer").css({
-    "justify-content":"left",
-    "align-items":"center"
-  });
-  else if(buttonClass == 5)
-  $(".timeContainer").css({
-    "justify-content":"center",
-    "align-items":"center",
-  });
-  else if(buttonClass == 6)
-  $(".timeContainer").css({
-    "justify-content":"right",
-    "align-items":"center"
-  });
-  else if(buttonClass == 7)
-  $(".timeContainer").css({
-    "justify-content":"left",
-    "align-items":"flex-end",
-  });
-  else if(buttonClass == 8)
-  $(".timeContainer").css({
-    "justify-content":"center",
-    "align-items":"flex-end"
-  });
-  else if(buttonClass == 9) 
-  $(".timeContainer").css({
-    "justify-content":"right",
-    "align-items":"flex-end"
-  });
+  const buttonStyles = {
+    1: { justifyContent: "left", alignItems: "start" },
+    2: { justifyContent: "center", alignItems: "start" },
+    3: { justifyContent: "right", alignItems: "start" },
+    4: { justifyContent: "left", alignItems: "center" },
+    5: { justifyContent: "center", alignItems: "center" },
+    6: { justifyContent: "right", alignItems: "center" },
+    7: { justifyContent: "left", alignItems: "flex-end" },
+    8: { justifyContent: "center", alignItems: "flex-end" },
+    9: { justifyContent: "right", alignItems: "flex-end" }
+  };
 
-  if(buttonClass == 9) {
-    $(".settingsHover").css({
-      "left":  "-400px",
-      "right": "auto"
-    });
-    $("#settingsButton").css({
-      "right":"auto",
-      "left":"15px"
-    });
-  }
+  $(".timeContainer").css(buttonStyles[buttonClass]);
 
-  else {
-    $(".settingsHover").css({
-      "position":"absolute",
-      "left": "auto",
-      "right":"-400px"
-    });
-    $("#settingsButton").css({
-      "right":"15px",
-      "left":"auto"
-    });
+  if (buttonClass == 9) {
+    $(".settingsHover").css({ left: "-400px", right: "auto" });
+    $("#settingsButton").css({ right: "auto", left: "15px" });
+  } else {
+    $(".settingsHover").css({ position: "absolute", left: "auto", right: "-400px" });
+    $("#settingsButton").css({ right: "15px", left: "auto" });
   }
 
   for (let i = 1; i < 10; i++) {
