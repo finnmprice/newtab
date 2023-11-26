@@ -25,6 +25,7 @@ chrome.storage.local.get(["rgb"]).then((result) => {
   rslider.value = r;
   gslider.value = g;
   bslider.value = b;
+  document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
   UpdateValue()
 });
 
