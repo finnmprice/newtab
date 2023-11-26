@@ -2,8 +2,8 @@
 
 <head>
     <title>New Tab</title>
-    <link rel="stylesheet" href="/style/style.css">
-    <script src="/thirdParty/jquery.min.js"></script>
+    <link rel="stylesheet" href="/style/style.css" />
+    <link rel="stylesheet" href="/style/nano.min.css">
 </head>
 
 <body id="body">
@@ -45,10 +45,11 @@
                     </div>
                     <div class="push"></div>
                     <div class="bgcolorRight">
+                        <div id="color-picker" style="display: inline-block;"></div>
                         <input type="text" id="hex" maxlength="7" value="#" style="display: inline-block;" name="hex"
                             autocomplete="off">
                         <button class="randomButton">
-                            <img src="/style/icons/random.svg"></img>
+                            <img src="/style/icons/random.svg" style="display: none"></img>
                         </button>
                     </div>
                 </div>
@@ -125,6 +126,8 @@
         <button id="settingsButton"><img src="/style/icons/slider.svg"></img></button>
     </div>
 </body>
-<script src="js/settings.js"></script>
 
 </html>
+<script src="/thirdParty/pickr.min.js"></script>
+<script src="/thirdParty/jquery.min.js"></script>
+<script src="js/settings.js"></script>

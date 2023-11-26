@@ -1,16 +1,31 @@
 var hourMode = false;
+const pickr = Pickr.create({
+    el: '#color-picker',
+    theme: 'nano',
+    default: '#3498db',
+    components: {
+        preview: true,
+        hue: true,
+        interaction: {
+            hex: true,
+            rgba: true,
+            input: true,
+            save: false
+        }
+    }
+});
 
 //storage
 chrome.storage.local.get(["rgb"]).then((result) => {
   rgb = result.rgb;
-  if (rgb == undefined)
-      rgb = [45,75,80];
+  if (rgb == undefined) {
+    rgb = [45,75,80];
+  }
   let [r,g,b] = rgb;
-  UpdateValue("r", r);
-  UpdateValue("g", g);
-  UpdateValue("b", b);
-  document.body.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
-  hex.value = rgbToHex(r,g,b);
+  rslider.value = r;
+  gslider.value = g;
+  bslider.value = b;
+  UpdateValue()
 });
 
 chrome.storage.local.get(["timeShow"]).then((result) => {
@@ -98,18 +113,18 @@ tslider = document.getElementById('tslider');
 yslider = document.getElementById('yslider');
 
 $('#rslider').on('input', function() {
-    UpdateValue("r", this.value);
-    document.body.style.backgroundColor = "rgb(" + this.value + "," + gslider.value + "," + bslider.value + ")";
+  UpdateValue("r", this.value);
+  document.body.style.backgroundColor = "rgb(" + this.value + "," + gslider.value + "," + bslider.value + ")";
 });
 
 $('#gslider').on('input',function() {
-    UpdateValue("g", this.value);
-    document.body.style.backgroundColor = "rgb(" + rslider.value + "," + this.value + "," + bslider.value + ")";
+  UpdateValue("g", this.value);
+  document.body.style.backgroundColor = "rgb(" + rslider.value + "," + this.value + "," + bslider.value + ")";
 });
 
 $('#bslider').on('input', function() {
-    UpdateValue("b", this.value);
-    document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + this.value + ")";
+  UpdateValue("b", this.value);
+  document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + this.value + ")";
 });
 
 $('#tslider').on('input', function() {
@@ -127,21 +142,36 @@ $('#yslider').on('input', function() {
 hex = document.getElementById('hex');
 
 hex.onchange = function() {
-    document.body.style.backgroundColor = hex.value;
-    hexValue = hexToRgb(hex.value);
-    if (hexValue !== null) {
-        UpdateValue("r", hexValue.r)
-        UpdateValue("g", hexValue.g)
-        UpdateValue("b", hexValue.b)
-    }
+  hexValue = hexToRgb(hex.value);
+  if (hexValue !== null) {
+    rslider.value = hexValue.r;
+    gslider.value = hexValue.g;
+    bslider.value = hexValue.b;
+    UpdateValue()
+  }
 }
 
-function UpdateValue(key, value) {
-    document.getElementById(key + 'slider').value = value;
-    document.getElementById(key + 'display').innerHTML = value;
+function updatePickr(apply) {
+  if(apply) {
+    pickr.applyColor();
+  }
+}
 
-    hex.value = rgbToHex(rslider.value, gslider.value, bslider.value);
-    chrome.storage.local.set({ rgb: [rslider.value, gslider.value, bslider.value] });
+pickr.on('change', (color, instance) => {
+  pickr.applyColor();
+  [['r', 0], ['g', 1], ['b', 2]].forEach(key => {
+    const rgb = Math.round(color.toRGBA()[key[1]])
+    document.getElementById(key[0] + 'slider').value = rgb;
+    document.getElementById(key[0] + 'display').innerHTML = rgb;    
+  });
+  chrome.storage.local.set({ rgb: [rslider.value, gslider.value, bslider.value] });
+
+  hex.value = rgbToHex(rslider.value, gslider.value, bslider.value);
+  document.body.style.backgroundColor = `rgb(${color.toRGBA()[0]},${color.toRGBA()[1]},${color.toRGBA()[2]})`;
+});
+
+function UpdateValue() {
+  pickr.setColor(rgbToHex(rslider.value, gslider.value, bslider.value))
 }
 
 //settings
@@ -158,8 +188,8 @@ $("#settingsExit").click(function(){
 
 $(".randomButton").click(function(){
     number = randomInt(50,150);
-    UpdateValue("r", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
     UpdateValue("g", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
+    UpdateValue("r", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
     UpdateValue("b", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
     document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + bslider.value + ")";
 
