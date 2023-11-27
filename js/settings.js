@@ -22,11 +22,19 @@ chrome.storage.local.get(["rgb"]).then((result) => {
     rgb = [45,75,80];
   }
   let [r,g,b] = rgb;
+  document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+
   rslider.value = r;
   gslider.value = g;
   bslider.value = b;
-  document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
-  UpdateValue()
+
+  document.getElementById('rdisplay').innerHTML = r;
+  document.getElementById('gdisplay').innerHTML = g;
+  document.getElementById('bdisplay').innerHTML = b;
+
+  rgb = rgbToHex(r,g,b);
+  hex.value = rgb;
+  UpdateValue(rgb);
 });
 
 chrome.storage.local.get(["timeShow"]).then((result) => {
@@ -114,18 +122,15 @@ tslider = document.getElementById('tslider');
 yslider = document.getElementById('yslider');
 
 $('#rslider').on('input', function() {
-  UpdateValue("r", this.value);
-  document.body.style.backgroundColor = "rgb(" + this.value + "," + gslider.value + "," + bslider.value + ")";
+  UpdateValue(rgbToHex(this.value, gslider.value, bslider.value));
 });
 
 $('#gslider').on('input',function() {
-  UpdateValue("g", this.value);
-  document.body.style.backgroundColor = "rgb(" + rslider.value + "," + this.value + "," + bslider.value + ")";
+  UpdateValue(rgbToHex(rslider.value, this.value, bslider.value));
 });
 
 $('#bslider').on('input', function() {
-  UpdateValue("b", this.value);
-  document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + this.value + ")";
+  UpdateValue(rgbToHex(rslider.value, gslider.value, this.value));
 });
 
 $('#tslider').on('input', function() {
@@ -142,42 +147,43 @@ $('#yslider').on('input', function() {
 
 hex = document.getElementById('hex');
 
-hex.onchange = function() {
+hex.oninput = function() {
   hexValue = hexToRgb(hex.value);
   if (hexValue !== null) {
     rslider.value = hexValue.r;
     gslider.value = hexValue.g;
     bslider.value = hexValue.b;
-    UpdateValue()
+    UpdateValue(hex.value)
   }
 }
 
-function updatePickr(apply) {
-  if(apply) {
-    pickr.applyColor();
-  }
-}
-
-pickr.on('change', (color, instance) => {
-  pickr.applyColor();
+function updateSliders(hexColor) {
   [['r', 0], ['g', 1], ['b', 2]].forEach(key => {
-    const rgb = Math.round(color.toRGBA()[key[1]])
+    const rgb = Math.round(hexColor[key[1]])
     document.getElementById(key[0] + 'slider').value = rgb;
     document.getElementById(key[0] + 'display').innerHTML = rgb;    
   });
+}
+
+pickr.on('change', (color, instance) => {
+  console.log('called')
+  pickr.applyColor();
+  updateSliders(color.toRGBA())
   chrome.storage.local.set({ rgb: [rslider.value, gslider.value, bslider.value] });
 
   hex.value = rgbToHex(rslider.value, gslider.value, bslider.value);
   document.body.style.backgroundColor = `rgb(${color.toRGBA()[0]},${color.toRGBA()[1]},${color.toRGBA()[2]})`;
 });
 
-function UpdateValue() {
-  pickr.setColor(rgbToHex(rslider.value, gslider.value, bslider.value))
+function UpdateValue(hex) {
+  pickr.applyColor();
+  pickr.setColor(hex);
 }
 
 //settings
 
 $("#settingsButton").click(function(){
+  UpdateValue(hex.value);
   $(".settings").fadeToggle(75);
 });
 
