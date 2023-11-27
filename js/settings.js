@@ -166,7 +166,6 @@ function updateSliders(hexColor) {
 }
 
 pickr.on('change', (color, instance) => {
-  console.log('called')
   pickr.applyColor();
   updateSliders(color.toRGBA())
   chrome.storage.local.set({ rgb: [rslider.value, gslider.value, bslider.value] });
