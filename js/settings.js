@@ -1,4 +1,5 @@
 var hourMode = false;
+var showSeconds = false;
 const pickr = Pickr.create({
     el: '#color-picker',
     theme: 'nano',
@@ -105,10 +106,18 @@ chrome.storage.local.get(["font"]).then((result) => {
   $("#fonts").val(font);
 });
 
+chrome.storage.local.get(["showSeconds"]).then((result) => {
+  showSeconds = result.showSeconds;
+  if (showSeconds == undefined)
+    showSeconds = "true";
+  $('#showSeconds').prop("checked", showSeconds); 
+  setTime();
+});
+
 chrome.storage.local.get(["hourMode"]).then((result) => {
   hourMode = result.hourMode;
   if (hourMode == undefined)
-    font = "true";
+    hourMode = "true";
   $('#timeMode').prop("checked", hourMode); 
   setTime();
 });
@@ -183,11 +192,11 @@ function UpdateValue(hex) {
 
 $("#settingsButton").click(function(){
   UpdateValue(hex.value);
-  $(".settings").fadeToggle(75);
+  $(".settings").fadeToggle(100);
 });
 
 $("#settingsExit").click(function(){
-  $(".settings").fadeOut(75);
+  $(".settings").fadeOut(100);
 });
 
 //randomize color
@@ -290,7 +299,7 @@ function search() {
 
 $(document).on('keyup',function(evt) {
     if (evt.keyCode == 27) {
-      $(".settings").fadeOut(10);
+      $(".settings").fadeToggle(100);
     }
 });
 
@@ -353,12 +362,13 @@ function getEngine() {
 //time
 
 setTime();
-const timeID = setInterval(setTime, 1000);
+const timeID = setInterval(setTime, 100);
 
 function setTime() {
   var currentTime = new Date();
     var time = currentTime.getHours() + ":" + currentTime.getMinutes();
     time = time.split(':');
+    seconds = currentTime.getSeconds();
 
     var hours = Number(time[0]);
     var minutes = Number(time[1]);
@@ -373,12 +383,14 @@ function setTime() {
       } else if (hours == 0) {
         timeValue = "12";
       }
-      timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
+      timeValue += ((minutes < 10) ? ":0" + minutes : ":" + minutes) + (showSeconds ? `:${seconds < 10 ? `0${seconds}` : seconds}` : '');
     }
+    
     else {
       minutes = minutes.toString().length == 1 ? "0" + minutes : minutes;
-      timeValue = hours + ":" + minutes;
+      timeValue = hours + ":" + minutes + (showSeconds ? `:${seconds < 10 ? `0${seconds}` : seconds}` : '');
     }
+
     if(document.getElementById("time").innerHTML !== timeValue) {
       document.getElementById("time").innerHTML = timeValue;
     }
@@ -391,6 +403,11 @@ $('#timeMode').change(function() {
   setTime();
 });
 
+$('#showSeconds').change(function() {
+  showSeconds = this.checked;
+  chrome.storage.local.set({ showSeconds: this.checked });
+  setTime();
+});
 
 //time buttons
 $(".button1, .button2, .button3, .button4, .button5, .button6, .button7, .button8, .button9").click(function() {
@@ -414,11 +431,11 @@ function setButtonLocation(buttonClass) {
   $(".timeContainer").css(buttonStyles[buttonClass]);
 
   if (buttonClass == 9) {
-    $(".settingsHover").css({ left: "-400px", right: "auto" });
-    $("#settingsButton").css({ right: "auto", left: "15px" });
+    $(".settingsHover").css({ left: "0", right: "auto" });
+    $("#settingsButton").css({ right: "auto", left: "0px" });
   } else {
-    $(".settingsHover").css({ position: "absolute", left: "auto", right: "-400px" });
-    $("#settingsButton").css({ right: "15px", left: "auto" });
+    $(".settingsHover").css({ position: "fixed", left: "auto", right: "0px" });
+    $("#settingsButton").css({ right: "0px", left: "auto" });
   }
 
   for (let i = 1; i < 10; i++) {

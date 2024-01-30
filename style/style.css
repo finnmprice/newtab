@@ -64,7 +64,6 @@ body {
     color: #fff;
     font-size: 64px;
     display: none;
-
     z-index: 99;
     text-shadow: 1px 2px 2px rgba(0, 0, 0, 1);
 }
@@ -88,7 +87,7 @@ body {
     position: absolute;
     background-color: #111;
     width: 430px;
-    height: 560px;
+    height: fit-content;
     top: 50px;
     border-radius: 10px;
     z-index: 999;
@@ -116,48 +115,45 @@ body {
 }
 
 .settingsHover {
-    position: absolute;
-    right:  -400px;
-    bottom: -400px;
-    width: 800px;
-    height: 800px;
-    border-radius: 800px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    aspect-ratio: 1;
 }
 
 .settingsHover:hover ~ #settingsButton {
     visibility: visible;
-    opacity: .75;
-    transition: opacity 0.5s, visibility 0.5s;
-}
-#settingsButton:hover {
-    visibility: visible;
     opacity: 1;
-    transition: opacity 0.25s, visibility 0.25s;
+    transition: opacity 0.5s, visibility 0.5s;
 }
 
 #settingsButton {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
+    position: fixed;
+    margin: 5px;
+    padding: 10px;
+    bottom: 0;
     filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.75));
     visibility: hidden;
     opacity: 0;
     transition: opacity 1s, visibility 1s;
-}
-
-#settingsButton img {
-    width:  20px;
-    height: 20px;
-}
-
-#settingsButton {
-    margin: 0px;
-    padding: 0px;
     text-decoration: none;
     border: none;
+    border-radius: 10px;
     background: none;
     color: #fff;
     cursor: pointer;
+}
+
+#settingsButton:hover {
+    visibility: visible;
+    opacity: 0.8;
+    transition: opacity 0.25s, visibility 0.25s;
+}
+
+#settingsButton img {
+    width:  22px;
+    height: 22px;
 }
 
 #settingsExit  {
@@ -340,7 +336,7 @@ input:checked+.slider:before {
     border: none;
     padding: 0;
     background: none;
-    color: #ccc;
+    color: #fff;
     padding: 3px;
     
     margin-left: 10px;
@@ -418,15 +414,14 @@ select {
 }
 
 .timeModeText {
-    display: inline-block;
     margin: 0;
     font-size: 12px;
-    margin-top: 10px;
+    margin-right: 10px;
 }
 
 #timeModeSlider {
-    top: -10px;
-    bottom: 10px;
+    /* top: -10px;
+    bottom: 10px; */
 }
 
 #colorPicker {
@@ -438,4 +433,18 @@ select {
 
 #colorPicker::-webkit-color-swatch {
     border: none;
+}
+
+.fv {
+    display: flex;
+    align-items: center;
+}
+
+.fh {
+    display: flex;
+    justify-content: center;
+}
+
+.lilgap {
+    height: 10px;
 }
