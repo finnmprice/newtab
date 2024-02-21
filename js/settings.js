@@ -109,7 +109,7 @@ chrome.storage.local.get(["font"]).then((result) => {
 chrome.storage.local.get(["showSeconds"]).then((result) => {
   showSeconds = result.showSeconds;
   if (showSeconds == undefined)
-    showSeconds = "true";
+    showSeconds = "false";
   $('#showSeconds').prop("checked", showSeconds); 
   setTime();
 });
@@ -337,27 +337,19 @@ $('#engines').on('input', function() {
 
 
 function getEngine() {
-  engine = $('#engines :selected').val();
-  switch(engine) {
-    case "duck":
-      engineText = "https://duckduckgo.com/?q=";
-      break;
-    case "google":
-      engineText = "https://www.google.com/search?q=";
-      break;
-    case "brave":
-      engineText = "https://search.brave.com/search?q=";
-      break;
-    case "bing":
-      engineText = "https://www.bing.com/search?q=";
-      break;
-    case "yahoo":
-      engineText = "https://search.yahoo.com/search?p=";
-      break;
-    }
+  const engines = {
+    duck: "https://duckduckgo.com/?q=",
+    ecosia: "https://www.ecosia.org/search?method=index&q=",
+    google: "https://www.google.com/search?q=",
+    brave: "https://search.brave.com/search?q=",
+    bing: "https://www.bing.com/search?q=",
+    yahoo: "https://search.yahoo.com/search?p="
+  };
 
-  return engineText;
+  const selectedEngine = $('#engines :selected').val();
+  return engines[selectedEngine] || '';
 }
+
 
 //time
 
