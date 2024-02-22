@@ -202,13 +202,20 @@ $("#settingsExit").click(function(){
 //randomize color
 
 $(".randomButton").click(function(){
-    number = randomInt(50,150);
-    UpdateValue("g", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
-    UpdateValue("r", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
-    UpdateValue("b", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
-    document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + bslider.value + ")";
-
+  number = randomInt(50,150);
+  UpdateValue("g", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
+  UpdateValue("r", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
+  UpdateValue("b", number + (randomInt(0,50) * (Math.round(Math.random()) * 2 - 1)));
+  document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + bslider.value + ")";
 });
+
+$('.timeContainer').click( e=> {
+  var isHidden = $(".settings").css("display") === "none";
+  if(!isHidden) {
+    $('.settings').fadeToggle(100);
+  }
+  // $('settings').is(":hidden")
+})
 
 
 function randomInt(min, max) { 
