@@ -42,6 +42,13 @@
                             <input type="range" id="bslider" name="b" min="0" max="255" />
                             <p id="bdisplay"></p>
                         </div>
+                        <div class="randomToggle fv">
+                            <p style="font-size: 12px; margin-right: 10px">random color</p>
+                            <label class="switch">
+                                <input id="randomToggle" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                     </div>
                     <div class="push"></div>
                     <div class="bgcolorRight">
@@ -53,8 +60,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="timeText">
-                    <p style="font-size: 12px;">time</p>
+                <div class="timeText fv">
+                    <p style="font-size: 12px; margin-right: 10px">time</p>
                     <label class="switch">
                         <input id="timeToggle" type="checkbox" checked>
                         <span class="slider round"></span>
@@ -111,11 +118,13 @@
                     <p style="margin-left: 10px;" class="timeModeText">24hr</p>
                 </div>
                 <div class="searchSettings">
-                    <p style="font-size: 12px;">search</p>
-                    <label class="switch">
-                        <input id="searchToggle" type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label><br>
+                    <div class="fv">
+                        <p style="font-size: 12px; margin-right: 10px;">search bar</p>
+                        <label class="switch">
+                            <input id="searchToggle" type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
                     <label for="y">y </label>
                     <input type="range" id="yslider" name="y" min="5" max="95" step="1" />
                     <p id="ydisplay"></p><br></br>

@@ -1,0 +1,46 @@
+{
+    "static": {
+        "google": "https://google.com",
+        "google maps": "https://maps.google.com",
+        "ppsbathrooms": "https://ppsbathrooms.org",
+        "youtube": "https://youtube.com",
+        "apple": "https://apple.com",
+        "wikipedia": "https://wikipedia.com",
+        "google drive": "https://drive.google.com",
+        "gmail": "https://gmail.com",
+        "google translate": "https://translate.google.com",
+        "github": "https://github.com",
+        "new york times": "https://nytimes.com",
+        "archive": "https://archive.org",
+        "instagram": "https://instagram.com",
+        "discord": "https://discord.com",
+        "amazon": "https://amazon.com",
+        "chat gpt": "https://chat.openai.com",
+        "claude": "https://claude.ai",
+        "speedtest": "https://speedtest.net",
+        "dictionary": "https://www.dictionary.com/"
+    },
+    "dynamic": {
+        "google maps": "https://www.google.com/maps/search/",
+        "youtube": "https://www.youtube.com/results?search_query=",
+        "wikipedia": "https://en.wikipedia.org/w/index.php?search=",
+        "amazon": "https://www.amazon.com/s?k=",
+        "google translate": "https://translate.google.com/?sl=es&tl=en&text=",
+        "archive": "https://web.archive.org/web/20240000000000*/",
+        "google": "https://www.google.com/search?q=",
+        "dictionary": "https://www.dictionary.com/browse/"
+    },
+    "alternatives": {
+        "google maps": ["maps"],
+        "wikipedia": ["wiki"],
+        "youtube": ["yt"],
+        "ppsbathrooms": ["pps bathrooms"],
+        "google drive": ["drive"],
+        "google translate": ["translate"],
+        "new york times": ["nyt", "ny times", "nytimes", "times"],
+        "instagram": ["insta"],
+        "chat gpt": ["gpt"],
+        "archive": ["wayback machine", "wayback"],
+        "dictionary": ["definition of", "definition"]
+    }
+}
