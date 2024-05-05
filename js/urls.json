@@ -7,6 +7,10 @@
         "apple": "https://apple.com",
         "wikipedia": "https://wikipedia.com",
         "google drive": "https://drive.google.com",
+        "slides": "https://slides.google.com/",
+        "docs": "https://docs.google.com/",
+        "sheets": "https://sheets.google.com/",
+        "forms": "https://forms.google.com/",
         "gmail": "https://gmail.com",
         "google translate": "https://translate.google.com",
         "github": "https://github.com",
@@ -14,21 +18,35 @@
         "archive": "https://archive.org",
         "instagram": "https://instagram.com",
         "discord": "https://discord.com",
+        "prime video": "https://www.amazon.com/s?k=prime%20video",
         "amazon": "https://amazon.com",
         "chat gpt": "https://chat.openai.com",
         "claude": "https://claude.ai",
         "speedtest": "https://speedtest.net",
-        "dictionary": "https://www.dictionary.com/"
+        "dictionary": "https://www.dictionary.com/",
+        "netflix": "https://www.netflix.com/browse",
+        "reddit": "https://reddit.com/",
+        "weather": "https://weather.com/",
+        "pi": "https://stuff.mit.edu/afs/sipb/contrib/pi/pi-billion.txt",
+        "desmos scientific": "https://www.desmos.com/scientific",
+        "desmos": "https://www.desmos.com/calculator",
+        "photopea": "https://www.photopea.com/",
+        "chrome web store": "https://chromewebstore.google.com/",
+        "what is my ip": "https://whatismyipaddress.com/"
     },
     "dynamic": {
         "google maps": "https://www.google.com/maps/search/",
         "youtube": "https://www.youtube.com/results?search_query=",
         "wikipedia": "https://en.wikipedia.org/w/index.php?search=",
         "amazon": "https://www.amazon.com/s?k=",
+        "prime video": "https://www.amazon.com/s?k=prime%20video%20",
         "google translate": "https://translate.google.com/?sl=es&tl=en&text=",
         "archive": "https://web.archive.org/web/20240000000000*/",
         "google": "https://www.google.com/search?q=",
-        "dictionary": "https://www.dictionary.com/browse/"
+        "dictionary": "https://www.dictionary.com/browse/",
+        "netflix": "https://www.netflix.com/search?q=",
+        "github": "https://github.com/search?q=",
+        "chrome web store": "https://chromewebstore.google.com/search/"
     },
     "alternatives": {
         "google maps": ["maps"],
@@ -41,6 +59,11 @@
         "instagram": ["insta"],
         "chat gpt": ["gpt"],
         "archive": ["wayback machine", "wayback"],
-        "dictionary": ["definition of", "definition"]
+        "dictionary": ["definition of", "definition"],
+        "prime video": ["prime"],
+        "desmos scientific": ["desmos calc", "desmos calculator", "calculator", "calc"],
+        "desmos": ["desmos graphing", "graph"],
+        "chrome web store": ["web store", "extensions"],
+        "what is my ip": ["ip"]
     }
 }
