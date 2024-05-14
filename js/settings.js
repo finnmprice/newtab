@@ -2,11 +2,23 @@ var hourMode = false;
 var showSeconds = false;
 var randomColor = false;
 let urlMappings;
+const defaults = {
+    "color": "#182036",
+    "timeShow": true,
+    "fontSize": 64,
+    "showSearch": true,
+    "searchY": 45,
+    "engine": "duck",
+    "buttonPosition": 3,
+    "font": "forzan",
+    "seconds": false,
+    "military": false
+}
 
 const pickr = Pickr.create({
     el: '#color-picker',
     theme: 'nano',
-    default: '#3498db',
+    default: defaults.color,
     components: {
         preview: true,
         hue: true,
@@ -19,53 +31,70 @@ const pickr = Pickr.create({
     }
 });
 
-fetch('/js/urls.json')
-    .then(response => response.json())
-    .then(data => {
-        urlMappings = data;
-    })
-    .catch(error => {
+async function loadUrlMappings() {
+    try {
+        const response = await fetch('/js/urls.json');
+        urlMappings = await response.json();
+    } catch (error) {
         console.error('Error loading URL mappings:', error);
-    });
+    }
+}
+loadUrlMappings();
 
-
-//storage
-chrome.storage.local.get(["randomColor"]).then((result) => {
-    randomColor = result.randomColor;
-    if (randomColor == undefined)
-        randomColor = false;
+chrome.storage.local.get([
+    "randomColor", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
+    "engine", "buttonPosition", "font", "showSeconds", "hourMode"], (result) => {
+    
+    randomColor = result.randomColor ?? false;
     $('#randomToggle').prop("checked", randomColor);
+    if (randomColor) {
+        randomBgColor();
+    } else {
+        let [r, g, b] = result.rgb ?? defaults.color;
+        document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+        updateColorDisplay(r, g, b);
+    }
+
+    timeShow = result.timeShow ?? defaults.timeShow;
+    $('#time').toggle(timeShow);
+    $('#timeToggle').prop("checked", timeShow);
+
+    setTimeSize(result.timeFont ?? defaults.fontSize);
+
+    searchShow = result.searchShow ?? defaults.showSearch;
+    $('.search').toggle(searchShow);
+    $('#searchToggle').prop("checked", searchShow);
+    searchY = result.searchY ?? defaults.searchY;
+    $('.search').css('margin-top', searchY - 2 + "vh");
+    document.getElementById('yslider').value = searchY;
+    setSearchHeight(searchY);
+
+    engine = result.engine ?? defaults.engine;
+    $("#engines").val(engine);
+    updateDropdownWidth('engines');
+
+    setButtonLocation(result.buttonPosition ?? defaults.buttonPosition);
+
+    font = result.font ?? defaults.font;
+    $('#time').css("font-family", font);
+    $("#fonts").val(font);
+    updateDropdownWidth('fonts');
+
+    showSeconds = result.showSeconds ?? defaults.seconds;
+    $('#showSeconds').prop("checked", showSeconds);
+    hourMode = result.hourMode ?? defaults.military;
+    $('#timeMode').prop("checked", hourMode);
     setTime();
 });
 
-chrome.storage.local.get(["rgb"]).then((result) => {
-    rgb = result.rgb;
-    if (rgb == undefined) {
-        rgb = [45, 75, 80];
-    }
-    let [r, g, b] = rgb;
-
-    if (!randomColor) {
-        document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
-        updateColorDisplay(r, g, b)
-    } else {
-        randomBgColor();
-    }
-});
-
 function randomBgColor() {
-    $.get("style/colors.txt", function(data) {
-        var lines = data.split("\n");
-
-        var randomIndex = Math.floor(Math.random() * lines.length);
-
-        var randomColorHex = lines[randomIndex];
-        var randomColorRgb = hexToRgb(randomColorHex)
-
-        let [r, g, b] = [randomColorRgb.r, randomColorRgb.g, randomColorRgb.b];
+    $.get("style/colors.txt", data => {
+        const lines = data.trim().split("\n");
+        const randomColorHex = lines[Math.floor(Math.random() * lines.length)];
+        const {r, g, b} = hexToRgb(randomColorHex);
 
         document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
-        updateColorDisplay(r, g, b)
+        updateColorDisplay(r, g, b);
     });
 }
 
@@ -74,97 +103,12 @@ function updateColorDisplay(r, g, b) {
     gslider.value = g;
     bslider.value = b;
 
-    document.getElementById('rdisplay').innerHTML = r;
-    document.getElementById('gdisplay').innerHTML = g;
-    document.getElementById('bdisplay').innerHTML = b;
+    document.getElementById('rdisplay').textContent = r;
+    document.getElementById('gdisplay').textContent = g;
+    document.getElementById('bdisplay').textContent = b;
 
-    rgb = rgbToHex(r, g, b);
-    hex.value = rgb;
+    hex.value = rgbToHex(r, g, b);
 }
-
-chrome.storage.local.get(["timeShow"]).then((result) => {
-    timeShow = result.timeShow;
-    if (timeShow == undefined)
-        timeShow = true;
-    if (timeShow) {
-        $('#time').fadeIn(100);
-        $('#timeToggle').prop("checked", true);
-    } else {
-        $('#time').hide();
-        $('#timeToggle').prop("checked", false);
-    }
-});
-
-chrome.storage.local.get(["timeFont"]).then((result) => {
-    timeFont = result.timeFont
-    if (timeFont == undefined)
-        timeFont = 64;
-    setTimeSize(timeFont)
-});
-
-chrome.storage.local.get(["searchShow"]).then((result) => {
-    searchShow = result.searchShow;
-    if (searchShow == undefined)
-        searchShow = true;
-    if (searchShow) {
-        $('.search').fadeIn(100);
-        $('#searchToggle').prop("checked", true);
-    } else {
-        $('.search').hide();
-        $('#searchToggle').prop("checked", false);
-    }
-});
-
-chrome.storage.local.get(["searchY"]).then((result) => {
-    searchY = result.searchY
-    if (searchY == undefined)
-        searchY = 50;
-    $('.search').css('margin-top', searchY - 2 + "vh");
-    document.getElementById('yslider').value = searchY;
-    setSearchHeight(searchY)
-});
-
-chrome.storage.local.get(["engine"]).then((result) => {
-    engine = result.engine;
-    if (engine == undefined)
-        engine = "duck";
-    $("#engines").val(engine);
-    updateDropdownWidth('engines');
-});
-
-chrome.storage.local.get(["buttonPosition"]).then((result) => {
-    position = result.buttonPosition;
-    if (position == undefined)
-        position = 3;
-    setButtonLocation(position);
-});
-
-chrome.storage.local.get(["font"]).then((result) => {
-    font = result.font;
-    if (font == undefined)
-        font = "forzan";
-    $('#time').css("font-family", font);
-    $("#fonts").val(font);
-    updateDropdownWidth('fonts');
-});
-
-chrome.storage.local.get(["showSeconds"]).then((result) => {
-    showSeconds = result.showSeconds;
-    if (showSeconds == undefined)
-        showSeconds = false;
-    $('#showSeconds').prop("checked", showSeconds);
-    setTime();
-});
-
-chrome.storage.local.get(["hourMode"]).then((result) => {
-    hourMode = result.hourMode;
-    if (hourMode == undefined)
-        hourMode = false;
-    $('#timeMode').prop("checked", hourMode);
-    setTime();
-});
-
-//sliders
 
 rslider = document.getElementById('rslider');
 gslider = document.getElementById('gslider');
@@ -172,19 +116,17 @@ bslider = document.getElementById('bslider');
 tslider = document.getElementById('tslider');
 yslider = document.getElementById('yslider');
 
-$('#rslider').on('input', function() {
-    UpdateValue(rgbToHex(this.value, gslider.value, bslider.value));
-});
-
-$('#gslider').on('input', function() {
-    UpdateValue(rgbToHex(rslider.value, this.value, bslider.value));
-});
-
-$('#bslider').on('input', function() {
-    UpdateValue(rgbToHex(rslider.value, gslider.value, this.value));
+$('#rslider, #gslider, #bslider').on('input', function() {
+    if ($('#randomToggle').prop('checked')) {
+        $('#randomToggle').click();
+    }
+    UpdateValue(rgbToHex($('#rslider').val(), $('#gslider').val(), $('#bslider').val()));
 });
 
 $('#tslider').on('input', function() {
+    if (!$('#timeToggle').prop('checked')) {
+        $('#timeToggle').click();
+    }
     setTimeSize(this.value);
 });
 
@@ -193,42 +135,30 @@ function setTimeSize(val) {
     $('#tinput').val(val)
     updateTextWidth('tinput')
     $('#tslider').val(val)
-    chrome.storage.local.set({
-        timeFont: val
-    });
+    chrome.storage.local.set({timeFont: val});
 }
 
 function setSearchHeight(val) {
-    $('.search').css('margin-top', val - 2 + "vh");
+    $('.search').css('margin-top', val + "vh");
     $('#yinput').val(val);
-    chrome.storage.local.set({
-        searchY: val
-    });
+    chrome.storage.local.set({searchY: val});
     updateTextWidth('yinput')
 }
 
 $('#tinput').on('input', function() {
-    var inputValue = $(this).val();
-    var numericValue = inputValue.replace(/[^0-9]/g, '');
-    numericValue = numericValue > 128 ? 128 : numericValue;
-    numericValue = (numericValue == '') ? 0 : numericValue;
-    numericValue = parseInt(numericValue, 10);
+    let numericValue = Math.min(128, parseInt($(this).val().replace(/[^0-9]/g, '') || 0, 10));
     $(this).val(numericValue);
     updateTextWidth('tinput');
     setTimeSize(numericValue);
 });
 
 $('#yinput').on('input', function() {
-    if (!$('#searchToggle').val()) {
+    if (!$('#searchToggle').prop('checked')) {
         $('#searchToggle').click();
     }
-    var inputValue = $(this).val();
-    var numericValue = inputValue.replace(/[^0-9]/g, '');
-    numericValue = numericValue > 95 ? 95 : numericValue;
-    numericValue = (numericValue == '') ? 0 : numericValue;
-    numericValue = parseInt(numericValue, 10);
+    let numericValue = Math.min(95, parseInt($(this).val().replace(/[^0-9]/g, '') || 0, 10));
     $(this).val(numericValue);
-    setSearchHeight(numericValue)
+    setSearchHeight(numericValue);
 });
 
 function updateTextWidth(id) {
@@ -238,10 +168,12 @@ function updateTextWidth(id) {
 function updateDropdownWidth(id) {
     var selectedOption = $('#' + id + ' option:selected');
     $('#' + id).css('width', (selectedOption.text().length + 3) + 'ch');
-    
 }
 
 $('#yslider').on('input', function() {
+    if (!$('#searchToggle').prop('checked')) {
+        $('#searchToggle').click();
+    }
     setSearchHeight(this.value);
 });
 
@@ -272,9 +204,7 @@ function updateSliders(hexColor) {
 pickr.on('change', (color, instance) => {
     pickr.applyColor();
     updateSliders(color.toRGBA())
-    chrome.storage.local.set({
-        rgb: [rslider.value, gslider.value, bslider.value]
-    });
+    chrome.storage.local.set({rgb: [rslider.value, gslider.value, bslider.value]});
 
     hex.value = rgbToHex(rslider.value, gslider.value, bslider.value);
     document.body.style.backgroundColor = `rgb(${color.toRGBA()[0]},${color.toRGBA()[1]},${color.toRGBA()[2]})`;
@@ -285,8 +215,6 @@ function UpdateValue(hex) {
     pickr.setColor(hex);
 }
 
-//settings
-
 $("#settingsButton").click(function() {
     UpdateValue(hex.value);
     $(".settings").fadeToggle(100);
@@ -296,18 +224,12 @@ $("#settingsExit").click(function() {
     $(".settings").fadeOut(100);
 });
 
-//randomize color
-
 $('#randomToggle').change(function() {
     if (!this.checked) {
-        chrome.storage.local.set({
-            randomColor: false
-        });
+        chrome.storage.local.set({randomColor: false});
     } else {
         randomBgColor();
-        chrome.storage.local.set({
-            randomColor: true
-        });
+        chrome.storage.local.set({randomColor: true});
     }
 });
 
@@ -324,15 +246,11 @@ $('.timeContainer').click(e => {
     if (!isHidden) {
         $('.settings').fadeToggle(100);
     }
-    // $('settings').is(":hidden")
 })
-
 
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
-
-//hex
 
 function rgbToHex(r, g, b) {
     return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
@@ -352,43 +270,29 @@ function hexToRgb(hex) {
     } : null;
 }
 
-//toggle time
-
 $('#timeToggle').change(function() {
     if (!this.checked) {
         $('#time').fadeOut(100);
-        chrome.storage.local.set({
-            timeShow: false
-        });
+        chrome.storage.local.set({timeShow: false});
     } else {
         $('#time').fadeIn(100);
-        chrome.storage.local.set({
-            timeShow: true
-        });
+        chrome.storage.local.set({timeShow: true});
     }
 });
 
 $('#fonts').on('input', function() {
     $('#time').css("font-family", $(this).val());
-    chrome.storage.local.set({
-        font: $(this).val()
-    });
+    chrome.storage.local.set({font: $(this).val()});
     updateDropdownWidth('fonts');
 });
-
-//search
 
 $('#searchToggle').change(function() {
     if (!this.checked) {
         $('.search').fadeOut(100);
-        chrome.storage.local.set({
-            searchShow: false
-        });
+        chrome.storage.local.set({searchShow: false});
     } else {
         $('.search').fadeIn(100);
-        chrome.storage.local.set({
-            searchShow: true
-        });
+        chrome.storage.local.set({searchShow: true});
     }
 });
 
@@ -459,8 +363,6 @@ function search() {
     window.location.href = getEngine() + encodeURIComponent(input);
 }
 
-
-
 $(document).on('keyup', function(evt) {
     if (evt.keyCode == 27) {
         $('#settingsButton').click();
@@ -480,7 +382,7 @@ $('#searchInput').on('input', function() {
 
 $("#clearSearch").click(function() {
     $('#searchInput').val("");
-    $('#clearSearch').hide();
+    $('#clearSearch').hide;
     $('#searchInput').focus();
 });
 
@@ -495,12 +397,9 @@ function validURL(str) {
 }
 
 $('#engines').on('input', function() {
-    chrome.storage.local.set({
-        engine: this.value
-    });
+    chrome.storage.local.set({ engine: this.value });
     updateDropdownWidth('engines');
 });
-
 
 function getEngine() {
     const engines = {
@@ -511,131 +410,77 @@ function getEngine() {
         bing: "https://www.bing.com/search?q=",
         yahoo: "https://search.yahoo.com/search?p="
     };
-
-    const selectedEngine = $('#engines :selected').val();
-    return engines[selectedEngine] || '';
+    return engines[$('#engines').val()] || '';
 }
-
 
 //time
 setTime();
 const timeID = setInterval(setTime, 100);
 
 function setTime() {
-    var currentTime = new Date();
-    var time = currentTime.getHours() + ":" + currentTime.getMinutes();
-    time = time.split(':');
-    seconds = currentTime.getSeconds();
-
-    var hours = Number(time[0]);
-    var minutes = Number(time[1]);
+    const currentTime = new Date();
+    let hours = currentTime.getHours();
+    let minutes = currentTime.getMinutes().toString().padStart(2, '0');
+    const seconds = currentTime.getSeconds().toString().padStart(2, '0');
 
     if (!hourMode) {
-        var timeValue;
-
-        if (hours > 0 && hours <= 12) {
-            timeValue = "" + hours;
-        } else if (hours > 12) {
-            timeValue = "" + (hours - 12);
-        } else if (hours == 0) {
-            timeValue = "12";
-        }
-        timeValue += ((minutes < 10) ? ":0" + minutes : ":" + minutes) + (showSeconds ? `:${seconds < 10 ? `0${seconds}` : seconds}` : '');
-    } else {
-        minutes = minutes.toString().length == 1 ? "0" + minutes : minutes;
-        timeValue = hours + ":" + minutes + (showSeconds ? `:${seconds < 10 ? `0${seconds}` : seconds}` : '');
+        hours = hours % 12 || 12;
     }
 
-    if (document.getElementById("time").innerHTML !== timeValue) {
-        document.getElementById("time").innerHTML = timeValue;
+    let timeValue = `${hours}:${minutes}`;
+    if (showSeconds) {
+        timeValue += `:${seconds}`;
     }
 
+    const timeElement = document.getElementById("time");
+    if (timeElement.innerHTML !== timeValue) {
+        timeElement.innerHTML = timeValue;
+    }
 }
 
 $('#timeMode').change(function() {
     hourMode = this.checked;
-    chrome.storage.local.set({
-        hourMode: this.checked
-    });
+    chrome.storage.local.set({hourMode: this.checked});
     setTime();
 });
 
 $('#showSeconds').change(function() {
     showSeconds = this.checked;
-    chrome.storage.local.set({
-        showSeconds: this.checked
-    });
+    chrome.storage.local.set({showSeconds: this.checked});
     setTime();
 });
 
 //time buttons
 $(".button1, .button2, .button3, .button4, .button5, .button6, .button7, .button8, .button9").click(function() {
-    var position = $(this).attr("class").replace('button', '');
+    const position = $(this).attr("class").match(/\d+/)[0];
     setButtonLocation(position);
 });
 
 function setButtonLocation(buttonClass) {
     const buttonStyles = {
-        1: {
-            justifyContent: "left",
-            alignItems: "start"
-        },
-        2: {
-            justifyContent: "center",
-            alignItems: "start"
-        },
-        3: {
-            justifyContent: "right",
-            alignItems: "start"
-        },
-        4: {
-            justifyContent: "left",
-            alignItems: "center"
-        },
-        5: {
-            justifyContent: "center",
-            alignItems: "center"
-        },
-        6: {
-            justifyContent: "right",
-            alignItems: "center"
-        },
-        7: {
-            justifyContent: "left",
-            alignItems: "flex-end"
-        },
-        8: {
-            justifyContent: "center",
-            alignItems: "flex-end"
-        },
-        9: {
-            justifyContent: "right",
-            alignItems: "flex-end"
-        }
+        1: {justifyContent: "left", alignItems: "start"},
+        2: {justifyContent: "center", alignItems: "start"},
+        3: {justifyContent: "right", alignItems: "start"},
+        4: {justifyContent: "left", alignItems: "center"},
+        5: {justifyContent: "center", alignItems: "center"},
+        6: {justifyContent: "right", alignItems: "center"},
+        7: {justifyContent: "left", alignItems: "flex-end"},
+        8: {justifyContent: "center", alignItems: "flex-end"},
+        9: {justifyContent: "right", alignItems: "flex-end"}
     };
 
     $(".timeContainer").css(buttonStyles[buttonClass]);
 
-    if (buttonClass == 9) {
-        $(".settingsHover").css({
-            left: "0",
-            right: "auto"
-        });
-        $("#settingsButton").css({
-            right: "auto",
-            left: "0px"
-        });
-    } else {
-        $(".settingsHover").css({
-            position: "fixed",
-            left: "auto",
-            right: "0px"
-        });
-        $("#settingsButton").css({
-            right: "0px",
-            left: "auto"
-        });
-    }
+    const isButtonNine = buttonClass == 9;
+    $(".settingsHover").css({
+        left: isButtonNine ? "0" : "auto",
+        right: isButtonNine ? "auto" : "0px",
+        position: isButtonNine ? "" : "fixed"
+    });
+    $("#settingsButton").css({
+        right: isButtonNine ? "auto" : "0px",
+        left: isButtonNine ? "0px" : "auto"
+    });
 
     for (let i = 1; i < 10; i++) {
         $('.button' + i).removeAttr('id');
@@ -643,7 +488,5 @@ function setButtonLocation(buttonClass) {
 
     $(".button" + buttonClass).prop('id', 'selectedButton');
 
-    chrome.storage.local.set({
-        buttonPosition: buttonClass
-    });
+    chrome.storage.local.set({buttonPosition: buttonClass});
 }
