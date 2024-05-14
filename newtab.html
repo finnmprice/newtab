@@ -67,8 +67,14 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <input type="range" id="tslider" name="t" step="1" min="0" max="128" />
-                <p id="tdisplay"></p>
+
+                <div class="fv" style=" margin-bottom: 10px;">
+                    <p style="font-size: 12px; margin-right: 10px; margin-top: 0; margin-bottom: 0;">size</p>
+                    <input type="range" id="tslider" name="t" step="1" min="0" max="128" />
+                    <input id="tinput" type="text">
+                    <p style="margin-top: 0; margin-bottom: 0;">px</p>
+                </div>
+
                 <div class="timeLocation">
                     <div>
                         <button class="button1"></button>
@@ -125,10 +131,15 @@
                             <span class="slider round"></span>
                         </label>
                     </div>
-                    <label for="y">y </label>
-                    <input type="range" id="yslider" name="y" min="5" max="95" step="1" />
-                    <p id="ydisplay"></p><br></br>
-                    <label style="font-size: 12px;" for="searchEngine">engine </label>
+                    
+                    <div class="fv" style="margin-bottom: 10px;">
+                        <p style="font-size: 12px; margin-right: 10px; margin-top: 0; margin-bottom: 0;">height</p>
+                        <input type="range" id="yslider" name="t" step="1" min="5" max="95" />
+                        <input id="yinput" type="text">
+                        <p style="margin-top: 0; margin-bottom: 0;">%</p>
+                    </div>
+
+                    <label style="font-size: 12px;" for="searchEngine">search engine </label>
                     <select name="searchEngines" id="engines">
                         <option value="duck">DuckDuckGo </option>
                         <option value="ecosia">Ecosia </option>

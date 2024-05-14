@@ -114,6 +114,16 @@ body {
     margin: 10px;
 }
 
+#tinput, #yinput {
+    background: none;
+    color: white;
+    width: fit-content;
+    border: none;
+    outline: none;
+    margin-left: 5px;
+    font-family: monospace;
+}
+
 .settingsHover {
     position: fixed;
     right: 0;
@@ -377,6 +387,7 @@ input:checked+.slider:before {
     color: #fff;
     font-family: monospaceNew;
     border: none;
+    outline: none;
 }
 
 #engines, #fonts option {

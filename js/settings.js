@@ -98,10 +98,8 @@ chrome.storage.local.get(["timeShow"]).then((result) => {
 chrome.storage.local.get(["timeFont"]).then((result) => {
     timeFont = result.timeFont
     if (timeFont == undefined)
-        timeFont = 42;
-    document.getElementById('time').style.fontSize = timeFont + "px";
-    document.getElementById('tslider').value = timeFont;
-    document.getElementById('tdisplay').innerHTML = timeFont + "px";
+        timeFont = 64;
+    setTimeSize(timeFont)
 });
 
 chrome.storage.local.get(["searchShow"]).then((result) => {
@@ -123,7 +121,7 @@ chrome.storage.local.get(["searchY"]).then((result) => {
         searchY = 50;
     $('.search').css('margin-top', searchY - 2 + "vh");
     document.getElementById('yslider').value = searchY;
-    document.getElementById('ydisplay').innerHTML = searchY + "%";
+    setSearchHeight(searchY)
 });
 
 chrome.storage.local.get(["engine"]).then((result) => {
@@ -131,6 +129,7 @@ chrome.storage.local.get(["engine"]).then((result) => {
     if (engine == undefined)
         engine = "duck";
     $("#engines").val(engine);
+    updateDropdownWidth('engines');
 });
 
 chrome.storage.local.get(["buttonPosition"]).then((result) => {
@@ -146,6 +145,7 @@ chrome.storage.local.get(["font"]).then((result) => {
         font = "forzan";
     $('#time').css("font-family", font);
     $("#fonts").val(font);
+    updateDropdownWidth('fonts');
 });
 
 chrome.storage.local.get(["showSeconds"]).then((result) => {
@@ -185,19 +185,64 @@ $('#bslider').on('input', function() {
 });
 
 $('#tslider').on('input', function() {
-    document.getElementById('time').style.fontSize = this.value + "px";
-    document.getElementById('tdisplay').innerHTML = this.value + "px";
-    chrome.storage.local.set({
-        timeFont: this.value
-    });
+    setTimeSize(this.value);
 });
 
-$('#yslider').on('input', function() {
-    $('.search').css('margin-top', this.value - 2 + "vh");
-    document.getElementById('ydisplay').innerHTML = this.value + "%";
+function setTimeSize(val) {
+    document.getElementById('time').style.fontSize = val + "px";
+    $('#tinput').val(val)
+    updateTextWidth('tinput')
+    $('#tslider').val(val)
     chrome.storage.local.set({
-        searchY: this.value
+        timeFont: val
     });
+}
+
+function setSearchHeight(val) {
+    $('.search').css('margin-top', val - 2 + "vh");
+    $('#yinput').val(val);
+    chrome.storage.local.set({
+        searchY: val
+    });
+    updateTextWidth('yinput')
+}
+
+$('#tinput').on('input', function() {
+    var inputValue = $(this).val();
+    var numericValue = inputValue.replace(/[^0-9]/g, '');
+    numericValue = numericValue > 128 ? 128 : numericValue;
+    numericValue = (numericValue == '') ? 0 : numericValue;
+    numericValue = parseInt(numericValue, 10);
+    $(this).val(numericValue);
+    updateTextWidth('tinput');
+    setTimeSize(numericValue);
+});
+
+$('#yinput').on('input', function() {
+    if (!$('#searchToggle').val()) {
+        $('#searchToggle').click();
+    }
+    var inputValue = $(this).val();
+    var numericValue = inputValue.replace(/[^0-9]/g, '');
+    numericValue = numericValue > 95 ? 95 : numericValue;
+    numericValue = (numericValue == '') ? 0 : numericValue;
+    numericValue = parseInt(numericValue, 10);
+    $(this).val(numericValue);
+    setSearchHeight(numericValue)
+});
+
+function updateTextWidth(id) {
+    document.getElementById(id).style.width = document.getElementById(id).value.length + 1 + 'ch';
+}
+
+function updateDropdownWidth(id) {
+    var selectedOption = $('#' + id + ' option:selected');
+    $('#' + id).css('width', (selectedOption.text().length + 3) + 'ch');
+    
+}
+
+$('#yslider').on('input', function() {
+    setSearchHeight(this.value);
 });
 
 hex = document.getElementById('hex');
@@ -328,6 +373,7 @@ $('#fonts').on('input', function() {
     chrome.storage.local.set({
         font: $(this).val()
     });
+    updateDropdownWidth('fonts');
 });
 
 //search
@@ -452,6 +498,7 @@ $('#engines').on('input', function() {
     chrome.storage.local.set({
         engine: this.value
     });
+    updateDropdownWidth('engines');
 });
 
 
