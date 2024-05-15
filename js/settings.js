@@ -277,13 +277,17 @@ $('#colorEditExit').click(function() {
             .then(text => {
                 $('#colorsTextArea').val(text.trim());
                 colors = text.split('\n').map(color => color.trim());
-                randomColors = colors;
-                randomBgColor();
+                if ($('#randomToggle').prop('checked')) {
+                    randomColors = colors;
+                    randomBgColor();
+                }
                 chrome.storage.local.set({randomColors: colors});
             });
     } else {
-        randomColors = colors;
-        randomBgColor();
+        if ($('#randomToggle').prop('checked')) {
+            randomColors = colors;
+            randomBgColor();
+        }
         chrome.storage.local.set({randomColors: colors});
     }
 
