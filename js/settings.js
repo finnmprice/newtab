@@ -1,6 +1,7 @@
 var hourMode = false;
 var showSeconds = false;
 var randomColor = false;
+var randomColors;
 let urlMappings;
 const defaults = {
     "color": "#182036",
@@ -42,9 +43,23 @@ async function loadUrlMappings() {
 loadUrlMappings();
 
 chrome.storage.local.get([
-    "randomColor", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
+    "randomColor", "randomColors", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
     "engine", "buttonPosition", "font", "showSeconds", "hourMode"], (result) => {
     
+
+    randomColors = result.randomColors ?? [];
+    if (randomColors.length === 0) {
+        $.get("style/colors.txt", function(data) {
+            randomColors = data.trim().split("\n").map(color => color.trim());
+            chrome.storage.local.set({randomColors: randomColors});
+        });
+    } 
+    
+    const textArea = document.getElementById('colorsTextArea');
+    if (textArea && randomColors.length > 0) {
+        textArea.value = randomColors.join('\n');
+    }
+
     randomColor = result.randomColor ?? false;
     $('#randomToggle').prop("checked", randomColor);
     if (randomColor) {
@@ -88,14 +103,25 @@ chrome.storage.local.get([
 });
 
 function randomBgColor() {
-    $.get("style/colors.txt", data => {
-        const lines = data.trim().split("\n");
-        const randomColorHex = lines[Math.floor(Math.random() * lines.length)];
-        const {r, g, b} = hexToRgb(randomColorHex);
-
-        document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
-        updateColorDisplay(r, g, b);
-    });
+    const validHexColorRegex = /^#([0-9A-F]{3}){1,2}$/i;
+    const validColors = randomColors.filter(color => color.trim() !== '' && validHexColorRegex.test(color.trim()));
+    let colorToUse;
+    let currentBgColor = document.body.style.backgroundColor;
+    let attempts = 0;
+    do {
+        if (validColors.length > 0) {
+            colorToUse = validColors[Math.floor(Math.random() * validColors.length)];
+        } else {
+            colorToUse = defaults.color;
+        }
+        const {r, g, b} = hexToRgb(colorToUse);
+        if (`rgb(${r},${g},${b})` !== currentBgColor || attempts >= validColors.length) {
+            updateColorDisplay(r, g, b);
+            document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+            break;
+        }
+        attempts++;
+    } while (true);
 }
 
 function updateColorDisplay(r, g, b) {
@@ -108,6 +134,8 @@ function updateColorDisplay(r, g, b) {
     document.getElementById('bdisplay').textContent = b;
 
     hex.value = rgbToHex(r, g, b);
+    UpdateValue(hex.value);
+
 }
 
 rslider = document.getElementById('rslider');
@@ -231,6 +259,36 @@ $('#randomToggle').change(function() {
         randomBgColor();
         chrome.storage.local.set({randomColor: true});
     }
+});
+
+$('#randomColorEdit').click(function() {
+    $('.colorSettings').css('opacity', '1').show(0);
+    $('.settingsInternalMain').css('opacity', '0').hide(0);
+});
+
+$('#colorEditExit').click(function() {
+    let colors = $('#colorsTextArea').val().split('\n')
+        .map(color => color.trim())
+        .filter(color => /^#[0-9A-F]{6}$/i.test(color));
+
+    if (colors.length === 0) {
+        fetch('style/colors.txt')
+            .then(response => response.text())
+            .then(text => {
+                $('#colorsTextArea').val(text.trim());
+                colors = text.split('\n').map(color => color.trim());
+                randomColors = colors;
+                randomBgColor();
+                chrome.storage.local.set({randomColors: colors});
+            });
+    } else {
+        randomColors = colors;
+        randomBgColor();
+        chrome.storage.local.set({randomColors: colors});
+    }
+
+    $('.settingsInternalMain').css('opacity', '1').show(0);
+    $('.colorSettings').css('opacity', '0').hide(0);
 });
 
 $(".randomButton").click(function() {
@@ -452,6 +510,9 @@ $('#showSeconds').change(function() {
 
 //time buttons
 $(".button1, .button2, .button3, .button4, .button5, .button6, .button7, .button8, .button9").click(function() {
+    if (!$('#timeToggle').prop('checked')) {
+        $('#timeToggle').click();
+    }
     const position = $(this).attr("class").match(/\d+/)[0];
     setButtonLocation(position);
 });

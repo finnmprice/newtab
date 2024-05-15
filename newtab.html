@@ -20,7 +20,7 @@
             </input>
         </div>
         <div class="settings">
-            <div class="settingsInternal">
+            <div class="settingsInternalMain">
                 <p style="display: inline-block; margin: 0;">settings</p>
                 <button id="settingsExit"><img src="/style/icons/x.svg"
                         style="width: 20px; height:20px;"></img></button>
@@ -48,6 +48,7 @@
                                 <input id="randomToggle" type="checkbox">
                                 <span class="slider round"></span>
                             </label>
+                            <img id="randomColorEdit" src="/style/icons/edit.svg">
                         </div>
                     </div>
                     <div class="push"></div>
@@ -131,7 +132,7 @@
                             <span class="slider round"></span>
                         </label>
                     </div>
-                    
+
                     <div class="fv" style="margin-bottom: 10px;">
                         <p style="font-size: 12px; margin-right: 10px; margin-top: 0; margin-bottom: 0;">height</p>
                         <input type="range" id="yslider" name="t" step="1" min="5" max="95" />
@@ -149,9 +150,14 @@
                         <option value="yahoo">Yahoo </option>
                     </select>
                 </div>
+                <a id="githubIcon" href="https://github.com/finnmprice/newtab" target="_blank"><img
+                        src="/style/icons/github.svg"></img></a>
             </div>
-            <a id="githubIcon" href="https://github.com/finnmprice/newtab" target="_blank"><img
-                    src="/style/icons/github.svg"></img></a>
+            <div class="colorSettings">
+                <img id="colorEditExit" src="/style/icons/check.svg"></img>
+                <p style="display: inline-block; margin: 0;">random colors</p>
+                <textarea id="colorsTextArea"></textarea>
+            </div>
         </div>
 
         <div class="settingsHover"></div>
