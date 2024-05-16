@@ -3,6 +3,7 @@ var showSeconds = false;
 var randomColor = false;
 var randomColors;
 let urlMappings;
+
 const defaults = {
     "color": "#182036",
     "timeShow": true,
@@ -13,7 +14,8 @@ const defaults = {
     "buttonPosition": 3,
     "font": "forzan",
     "seconds": false,
-    "military": false
+    "military": false,
+    "randomColor": false
 }
 
 const pickr = Pickr.create({
@@ -60,7 +62,7 @@ chrome.storage.local.get([
         textArea.value = randomColors.join('\n');
     }
 
-    randomColor = result.randomColor ?? false;
+    randomColor = result.randomColor ?? defaults.randomColor;
     $('#randomToggle').prop("checked", randomColor);
     if (randomColor) {
         randomBgColor();
@@ -134,8 +136,6 @@ function updateColorDisplay(r, g, b) {
     document.getElementById('bdisplay').textContent = b;
 
     hex.value = rgbToHex(r, g, b);
-    UpdateValue(hex.value);
-
 }
 
 rslider = document.getElementById('rslider');
@@ -269,14 +269,16 @@ $('#randomColorEdit').click(function() {
 $('#colorEditExit').click(function() {
     let colors = $('#colorsTextArea').val().split('\n')
         .map(color => color.trim())
-        .filter(color => /^#[0-9A-F]{6}$/i.test(color));
+        .filter(color => /^[#]?[0-9A-F]{6}$/i.test(color))
+        .map(color => color.startsWith('#') ? color : '#' + color);
 
     if (colors.length === 0) {
         fetch('style/colors.txt')
             .then(response => response.text())
             .then(text => {
                 $('#colorsTextArea').val(text.trim());
-                colors = text.split('\n').map(color => color.trim());
+                colors = text.split('\n').map(color => color.trim())
+                    .map(color => color.startsWith('#') ? color : '#' + color);
                 if ($('#randomToggle').prop('checked')) {
                     randomColors = colors;
                     randomBgColor();
