@@ -5,6 +5,7 @@ var randomColors;
 var randomGradient;
 var bgColor;
 let urlMappings;
+let ecosiaMode;
 
 const defaults = {
     "color": [24, 32, 54],
@@ -18,7 +19,8 @@ const defaults = {
     "seconds": false,
     "military": false,
     "randomColor": false,
-    "randomGradient": false
+    "randomGradient": false,
+    "ecosiaMode": false
 }
 
 
@@ -50,7 +52,7 @@ loadUrlMappings();
 
 chrome.storage.local.get([
     "randomColor", "randomColors", "randomGradient", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
-    "engine", "buttonPosition", "font", "showSeconds", "hourMode"], (result) => {
+    "engine", "buttonPosition", "font", "showSeconds", "hourMode", "ecosiaMode"], (result) => {
     
 
     randomColors = result.randomColors ?? [];
@@ -72,17 +74,25 @@ chrome.storage.local.get([
         randomBgGradient();
     }
 
+
+
     randomColor = result.randomColor ?? defaults.randomColor;
     $('#randomToggle').prop("checked", randomColor);
     let [r, g, b] = result.rgb ?? defaults.color;
     bgColor = `rgb(${r},${g},${b})`;
     updateColorDisplay(r, g, b);
 
-    if (randomColor) {
+    ecosiaMode = result.ecosiaMode ?? defaults.ecosiaMode;
+    setEcosiaMode(ecosiaMode);
+
+    if(ecosiaMode) {
+        document.body.style.background = "#242425";
+    }
+    else if (randomColor) {
         randomBgColor();
     }
     else {
-        document.body.style.backgroundColor = bgColor;
+        document.body.style.background = bgColor;
     }
 
     timeShow = result.timeShow ?? defaults.timeShow;
@@ -98,9 +108,14 @@ chrome.storage.local.get([
     $('.search').css('margin-top', searchY - 2 + "vh");
     document.getElementById('yslider').value = searchY;
     setSearchHeight(searchY);
-
+    
     engine = result.engine ?? defaults.engine;
     $("#engines").val(engine);
+    if (engine == 'ecosia') {
+        $('#ecosiaMode').show(100);
+    } else {
+        $('#ecosiaMode').hide(100);
+    }
     updateDropdownWidth('engines');
 
     setButtonLocation(result.buttonPosition ?? defaults.buttonPosition);
@@ -236,6 +251,9 @@ $('#rslider, #gslider, #bslider').on('input', function() {
     if ($('#randomToggle').prop('checked')) {
         $('#randomToggle').click();
     }
+    if(ecosiaMode) {
+        setEcosiaMode(false)
+    }
     UpdateValue(rgbToHex($('#rslider').val(), $('#gslider').val(), $('#bslider').val()));
 });
 
@@ -256,6 +274,7 @@ function setTimeSize(val) {
 
 function setSearchHeight(val) {
     $('.search').css('margin-top', val + "vh");
+    $('#ecosiaLogo').css('margin-top', val + "vh");
     $('#yinput').val(val);
     chrome.storage.local.set({searchY: val});
     updateTextWidth('yinput')
@@ -326,10 +345,15 @@ pickr.on('change', (color, instance) => {
 });
 
 function UpdateValue(hex) {
-    pickr.applyColor();
-    pickr.setColor(hex);
-    let rgb = hexToRgb(hex);
-    bgColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    if(ecosiaMode) {
+        document.body.style.background = "#242425";
+    }
+    else {
+        pickr.applyColor();
+        pickr.setColor(hex);
+        let rgb = hexToRgb(hex);
+        bgColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    }
 }
 
 $("#settingsButton").click(function() {
@@ -339,9 +363,11 @@ $("#settingsButton").click(function() {
 
 $("#settingsExit").click(function() {
     $(".settings").fadeOut(100);
+    UpdateValue(hex.value);
 });
 
 $('#randomToggle').change(function() {
+    setEcosiaMode(false)
     if (!this.checked) {
         chrome.storage.local.set({randomColor: false});
         document.body.style.background = bgColor;
@@ -553,7 +579,35 @@ function validURL(str) {
 
 $('#engines').on('input', function() {
     chrome.storage.local.set({ engine: this.value });
+    if (this.value == 'ecosia') {
+        $('#ecosiaMode').fadeIn(100);
+    } else {
+        $('#ecosiaMode').fadeOut(100);
+        setEcosiaMode(false);
+    }
     updateDropdownWidth('engines');
+});
+
+function setEcosiaMode(enable) {
+    $('#ecosiaModeToggle').prop('checked', enable);
+    ecosiaMode = enable;
+    if (enable) {
+        document.body.style.background = "#242425";
+        $('#ecosiaModeBg').fadeIn(0);
+    } else {
+        let rgbValues = bgColor.match(/\d+/g);
+        UpdateValue(rgbToHex(parseInt(rgbValues[0]), parseInt(rgbValues[1]), parseInt(rgbValues[2])));
+        $('#ecosiaModeBg').fadeOut(0);
+        
+    }
+}
+
+// fetch('https://ecosia.org').then((response) => response.text()).then((text) => console.log(text));
+
+
+$('#ecosiaModeToggle').change(function() {
+    setEcosiaMode(this.checked);
+    chrome.storage.local.set({ecosiaMode: this.checked});
 });
 
 function getEngine() {
