@@ -68,6 +68,20 @@ body {
     text-shadow: 1px 2px 2px rgba(0, 0, 0, 1);
 }
 
+.text {
+    font-size: 12px;
+    margin-right: 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.colorLabel {
+    font-size: 16px;
+    margin-right: 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 .timeContainer {
     display: flex;
     width: 100%;
@@ -252,7 +266,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .push {
-    margin-left: auto;
+    margin-left: 40px;
 }
 
 .randomButton {
@@ -275,7 +289,6 @@ input[type="range"]::-moz-range-thumb {
 .bgcolorRight {
     display: flex;
     align-items: center;
-    margin-top: 38px;
 }
 
 .randomButton img {
@@ -420,6 +433,7 @@ input:checked+.slider:before {
     font-family: monospaceNew;
     border: none;
     outline: none;
+    font-size: 12px;
 }
 
 #engines, #fonts option {

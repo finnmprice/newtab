@@ -24,31 +24,23 @@
                 <p style="display: inline-block; margin: 0;">settings</p>
                 <button id="settingsExit"><img src="/style/icons/x.svg"
                         style="width: 20px; height:20px;"></img></button>
+                <p class="text">background color</p>
                 <div class="bgcolor">
                     <div class="bgcolorLeft">
-                        <p style="font-size: 12px">background color</p>
-                        <div class="r">
-                            <label for="r">r </label>
+                        <div class="fv">
+                            <p class="colorLabel">r</p>
                             <input type="range" id="rslider" name="r" min="0" max="255" />
                             <p id="rdisplay"></p>
                         </div>
-                        <div class="g">
-                            <label for="g">g </label>
+                        <div class="fv">
+                            <p class="colorLabel">g</p>
                             <input type="range" id="gslider" name="g" min="0" max="255" />
                             <p id="gdisplay"></p>
                         </div>
-                        <div class="b">
-                            <label for="b">b </label>
+                        <div class="fv">
+                            <p class="colorLabel">b</p>
                             <input type="range" id="bslider" name="b" min="0" max="255" />
                             <p id="bdisplay"></p>
-                        </div>
-                        <div class="randomToggle fv">
-                            <p style="font-size: 12px; margin-right: 10px">random color</p>
-                            <label class="switch">
-                                <input id="randomToggle" type="checkbox">
-                                <span class="slider round"></span>
-                            </label>
-                            <img id="randomColorEdit" src="/style/icons/edit.svg">
                         </div>
                     </div>
                     <div class="push"></div>
@@ -61,19 +53,36 @@
                         </button>
                     </div>
                 </div>
+
+                <div class="randomToggle fv">
+                    <p class="text">random color</p>
+                    <label class="switch">
+                        <input id="randomToggle" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <img id="randomColorEdit" src="/style/icons/edit.svg">
+                </div>
+                <div class="randomGradientToggle fv">
+                    <p class="text">random gradient</p>
+                    <label class="switch">
+                        <input id="randomGradientToggle" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
                 <div class="timeText fv">
-                    <p style="font-size: 12px; margin-right: 10px">time</p>
+                    <p class="text">time</p>
                     <label class="switch">
                         <input id="timeToggle" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
                 </div>
 
-                <div class="fv" style=" margin-bottom: 10px;">
-                    <p style="font-size: 12px; margin-right: 10px; margin-top: 0; margin-bottom: 0;">size</p>
+                <div class="fv">
+                    <p class="text">size</p>
                     <input type="range" id="tslider" name="t" step="1" min="0" max="128" />
                     <input id="tinput" type="text">
-                    <p style="margin-top: 0; margin-bottom: 0;">px</p>
+                    <p class="text">px</p>
                 </div>
 
                 <div class="timeLocation">
@@ -106,18 +115,16 @@
                     <option value="romanica">romanica </option>
                     <option value="roboto">roboto </option>
                     <option value="bebasneue">bebas neue </option>
-                </select><br>
-                <div class="lilgap"></div>
+                </select>
                 <div class="fv">
-                    <p class="timeModeText">show seconds</p>
+                    <p class="text">show seconds</p>
                     <label class="switch">
                         <input id="showSeconds" type="checkbox" checked>
                         <span id="timeModeSlider" class="slider round"></span>
                     </label>
                 </div>
-                <div class="lilgap"></div>
                 <div class="fv">
-                    <p class="timeModeText">12hr</p>
+                    <p class="text">12hr</p>
                     <label class="switch">
                         <input id="timeMode" type="checkbox" checked>
                         <span id="timeModeSlider" class="slider round"></span>
@@ -126,7 +133,7 @@
                 </div>
                 <div class="searchSettings">
                     <div class="fv">
-                        <p style="font-size: 12px; margin-right: 10px;">search bar</p>
+                        <p class="text">search bar</p>
                         <label class="switch">
                             <input id="searchToggle" type="checkbox" checked>
                             <span class="slider round"></span>
@@ -134,7 +141,7 @@
                     </div>
 
                     <div class="fv" style="margin-bottom: 10px;">
-                        <p style="font-size: 12px; margin-right: 10px; margin-top: 0; margin-bottom: 0;">height</p>
+                        <p class="text">height</p>
                         <input type="range" id="yslider" name="t" step="1" min="5" max="95" />
                         <input id="yinput" type="text">
                         <p style="margin-top: 0; margin-bottom: 0;">%</p>

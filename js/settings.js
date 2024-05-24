@@ -2,6 +2,8 @@ var hourMode = false;
 var showSeconds = false;
 var randomColor = false;
 var randomColors;
+var randomGradient;
+var bgColor;
 let urlMappings;
 
 const defaults = {
@@ -15,7 +17,8 @@ const defaults = {
     "font": "forzan",
     "seconds": false,
     "military": false,
-    "randomColor": false
+    "randomColor": false,
+    "randomGradient": false
 }
 
 const pickr = Pickr.create({
@@ -45,7 +48,7 @@ async function loadUrlMappings() {
 loadUrlMappings();
 
 chrome.storage.local.get([
-    "randomColor", "randomColors", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
+    "randomColor", "randomColors", "randomGradient", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
     "engine", "buttonPosition", "font", "showSeconds", "hourMode"], (result) => {
     
 
@@ -55,21 +58,29 @@ chrome.storage.local.get([
             randomColors = data.trim().split("\n").map(color => color.trim());
             chrome.storage.local.set({randomColors: randomColors});
         });
-    } 
-    
+    }
+
     const textArea = document.getElementById('colorsTextArea');
     if (textArea && randomColors.length > 0) {
         textArea.value = randomColors.join('\n');
     }
 
+    randomGradient = result.randomGradient ?? defaults.randomGradient;
+    $('#randomGradientToggle').prop("checked", randomGradient);
+    if (randomGradient) {
+        randomBgGradient();
+    }
     randomColor = result.randomColor ?? defaults.randomColor;
     $('#randomToggle').prop("checked", randomColor);
+    let [r, g, b] = result.rgb ?? defaults.color;
+    bgColor = `rgb(${r},${g},${b})`;
+    updateColorDisplay(r, g, b);
+
     if (randomColor) {
         randomBgColor();
-    } else {
-        let [r, g, b] = result.rgb ?? defaults.color;
-        document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
-        updateColorDisplay(r, g, b);
+    }
+    else {
+        document.body.style.backgroundColor = bgColor;
     }
 
     timeShow = result.timeShow ?? defaults.timeShow;
@@ -119,11 +130,86 @@ function randomBgColor() {
         const {r, g, b} = hexToRgb(colorToUse);
         if (`rgb(${r},${g},${b})` !== currentBgColor || attempts >= validColors.length) {
             updateColorDisplay(r, g, b);
-            document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+            document.body.style.background = `rgb(${r},${g},${b})`;
             break;
         }
         attempts++;
     } while (true);
+}
+
+function randomBgGradient() {
+    document.body.style.transition = 'background 5s linear';
+    var color1;
+    var color2;
+
+    if(bgColor && !randomColor) {
+        let rgbValues = bgColor.match(/\d+/g);
+        let currentBg = rgbToHex(parseInt(rgbValues[0]), parseInt(rgbValues[1]), parseInt(rgbValues[2]));
+        color1 = currentBg;
+        color2 = currentBg;
+    }
+    else if (bgColor && randomColor) {
+        let rgbValues = document.body.style.backgroundColor.match(/\d+/g);
+        let currentBg = rgbToHex(parseInt(rgbValues[0]), parseInt(rgbValues[1]), parseInt(rgbValues[2]));
+        color1 = currentBg;
+        color2 = currentBg;
+    }
+    else {
+        color1 = randomColors[Math.floor(Math.random() * randomColors.length)];
+        color2 = randomColors[Math.floor(Math.random() * randomColors.length)];
+    }
+    document.body.style.background = `linear-gradient(to right, ${color1}, ${color2})`;
+
+    let interval;
+    function updateGradient() {
+        let newColor1 = randomColors[Math.floor(Math.random() * randomColors.length)];
+        let newColor2 = randomColors[Math.floor(Math.random() * randomColors.length)];
+
+        let step = 0;
+        const steps = 500;
+        interval = setInterval(() => {
+            step++;
+            let midColor1 = interpolateColor(color1, newColor1, step / steps);
+            let midColor2 = interpolateColor(color2, newColor2, step / steps);
+            document.body.style.background = `linear-gradient(to right, ${midColor1}, ${midColor2})`;
+            if (step >= steps) {
+                clearInterval(interval);
+                color1 = newColor1;
+                color2 = newColor2;
+                updateGradient();
+            }
+        }, 0);
+    }
+
+    updateGradient();
+
+    function stopGradientFade() {
+        clearInterval(interval);
+        document.body.style.transition = 'none';
+
+        if ($('#randomToggle').prop('checked')) {
+            randomBgColor();
+        } else {
+            document.body.style.background = bgColor;
+        }
+    }
+
+    window.stopGradientFade = stopGradientFade;
+}
+
+function interpolateColor(colorStart, colorEnd, factor) {
+    let result = colorStart.slice(1);
+    let resultEnd = colorEnd.slice(1);
+
+    let r = Math.ceil(parseInt(result.substring(0, 2), 16) * (1 - factor) + parseInt(resultEnd.substring(0, 2), 16) * factor);
+    let g = Math.ceil(parseInt(result.substring(2, 4), 16) * (1 - factor) + parseInt(resultEnd.substring(2, 4), 16) * factor);
+    let b = Math.ceil(parseInt(result.substring(4, 6), 16) * (1 - factor) + parseInt(resultEnd.substring(4, 6), 16) * factor);
+
+    let hexR = r.toString(16).padStart(2, '0');
+    let hexG = g.toString(16).padStart(2, '0');
+    let hexB = b.toString(16).padStart(2, '0');
+
+    return `#${hexR}${hexG}${hexB}`;
 }
 
 function updateColorDisplay(r, g, b) {
@@ -233,7 +319,6 @@ pickr.on('change', (color, instance) => {
     pickr.applyColor();
     updateSliders(color.toRGBA())
     chrome.storage.local.set({rgb: [rslider.value, gslider.value, bslider.value]});
-
     hex.value = rgbToHex(rslider.value, gslider.value, bslider.value);
     document.body.style.backgroundColor = `rgb(${color.toRGBA()[0]},${color.toRGBA()[1]},${color.toRGBA()[2]})`;
 });
@@ -241,6 +326,8 @@ pickr.on('change', (color, instance) => {
 function UpdateValue(hex) {
     pickr.applyColor();
     pickr.setColor(hex);
+    let rgb = hexToRgb(hex);
+    bgColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 }
 
 $("#settingsButton").click(function() {
@@ -255,9 +342,19 @@ $("#settingsExit").click(function() {
 $('#randomToggle').change(function() {
     if (!this.checked) {
         chrome.storage.local.set({randomColor: false});
+        document.body.style.background = bgColor;
     } else {
         randomBgColor();
         chrome.storage.local.set({randomColor: true});
+    }
+});
+
+$('#randomGradientToggle').change(function() {
+    chrome.storage.local.set({randomGradient: this.checked});
+    if (this.checked) {
+        randomBgGradient();
+    } else {
+        stopGradientFade();
     }
 });
 
@@ -295,14 +392,6 @@ $('#colorEditExit').click(function() {
 
     $('.settingsInternalMain').css('opacity', '1').show(0);
     $('.colorSettings').css('opacity', '0').hide(0);
-});
-
-$(".randomButton").click(function() {
-    number = randomInt(50, 150);
-    UpdateValue("g", number + (randomInt(0, 50) * (Math.round(Math.random()) * 2 - 1)));
-    UpdateValue("r", number + (randomInt(0, 50) * (Math.round(Math.random()) * 2 - 1)));
-    UpdateValue("b", number + (randomInt(0, 50) * (Math.round(Math.random()) * 2 - 1)));
-    document.body.style.backgroundColor = "rgb(" + rslider.value + "," + gslider.value + "," + bslider.value + ")";
 });
 
 $('.timeContainer').click(e => {
