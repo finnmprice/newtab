@@ -7,7 +7,7 @@ var bgColor;
 let urlMappings;
 
 const defaults = {
-    "color": "#182036",
+    "color": [24, 32, 54],
     "timeShow": true,
     "fontSize": 64,
     "showSearch": true,
@@ -21,10 +21,11 @@ const defaults = {
     "randomGradient": false
 }
 
+
 const pickr = Pickr.create({
     el: '#color-picker',
     theme: 'nano',
-    default: defaults.color,
+    default: `rgb(${defaults.color[0]}, ${defaults.color[1]}, ${defaults.color[2]})`,
     components: {
         preview: true,
         hue: true,
@@ -70,6 +71,7 @@ chrome.storage.local.get([
     if (randomGradient) {
         randomBgGradient();
     }
+
     randomColor = result.randomColor ?? defaults.randomColor;
     $('#randomToggle').prop("checked", randomColor);
     let [r, g, b] = result.rgb ?? defaults.color;
@@ -125,7 +127,7 @@ function randomBgColor() {
         if (validColors.length > 0) {
             colorToUse = validColors[Math.floor(Math.random() * validColors.length)];
         } else {
-            colorToUse = defaults.color;
+            colorToUse = `rgb(${defaults.color[0]}, ${defaults.color[1]}, ${defaults.color[2]})`;
         }
         const {r, g, b} = hexToRgb(colorToUse);
         if (`rgb(${r},${g},${b})` !== currentBgColor || attempts >= validColors.length) {
