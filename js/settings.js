@@ -85,10 +85,7 @@ chrome.storage.local.get([
     ecosiaMode = result.ecosiaMode ?? defaults.ecosiaMode;
     setEcosiaMode(ecosiaMode);
 
-    if(ecosiaMode) {
-        document.body.style.background = "#242425";
-    }
-    else if (randomColor) {
+    if (randomColor) {
         randomBgColor();
     }
     else {
@@ -345,15 +342,10 @@ pickr.on('change', (color, instance) => {
 });
 
 function UpdateValue(hex) {
-    if(ecosiaMode) {
-        document.body.style.background = "#242425";
-    }
-    else {
         pickr.applyColor();
         pickr.setColor(hex);
         let rgb = hexToRgb(hex);
         bgColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-    }
 }
 
 $("#settingsButton").click(function() {
@@ -592,7 +584,6 @@ function setEcosiaMode(enable) {
     $('#ecosiaModeToggle').prop('checked', enable);
     ecosiaMode = enable;
     if (enable) {
-        document.body.style.background = "#242425";
         $('#ecosiaModeBg').fadeIn(0);
     } else {
         let rgbValues = bgColor.match(/\d+/g);
