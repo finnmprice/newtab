@@ -6,6 +6,12 @@ var randomGradient;
 var bgColor;
 let urlMappings;
 let ecosiaMode;
+let ecosiaSearches;
+
+var manifestVersion = chrome.runtime.getManifest()
+$('#manifestVersion').text(`v${manifestVersion.version}`)
+
+// add ecosia tree counter
 
 const defaults = {
     "color": [24, 32, 54],
@@ -20,7 +26,8 @@ const defaults = {
     "military": false,
     "randomColor": false,
     "randomGradient": false,
-    "ecosiaMode": false
+    "ecosiaMode": false,
+    "ecosiaSearches": 0
 }
 
 
@@ -52,8 +59,7 @@ loadUrlMappings();
 
 chrome.storage.local.get([
     "randomColor", "randomColors", "randomGradient", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
-    "engine", "buttonPosition", "font", "showSeconds", "hourMode", "ecosiaMode"], (result) => {
-    
+    "engine", "buttonPosition", "font", "showSeconds", "hourMode", "ecosiaMode", "ecosiaSearches"], (result) => {
 
     randomColors = result.randomColors ?? [];
     if (randomColors.length === 0) {
@@ -74,8 +80,10 @@ chrome.storage.local.get([
         randomBgGradient();
     }
 
-
-
+    ecosiaSearches = result.ecosiaSearches ?? defaults.ecosiaSearches;
+    $('#treeNumber').html(getEcosiaTrees());
+    updateEcosiaBar();
+    
     randomColor = result.randomColor ?? defaults.randomColor;
     $('#randomToggle').prop("checked", randomColor);
     let [r, g, b] = result.rgb ?? defaults.color;
@@ -111,6 +119,7 @@ chrome.storage.local.get([
     if (engine == 'ecosia') {
         $('#ecosiaMode').show(100);
     } else {
+        setEcosiaMode(false);
         $('#ecosiaMode').hide(100);
     }
     updateDropdownWidth('engines');
@@ -248,9 +257,6 @@ $('#rslider, #gslider, #bslider').on('input', function() {
     if ($('#randomToggle').prop('checked')) {
         $('#randomToggle').click();
     }
-    if(ecosiaMode) {
-        setEcosiaMode(false)
-    }
     UpdateValue(rgbToHex($('#rslider').val(), $('#gslider').val(), $('#bslider').val()));
 });
 
@@ -359,7 +365,7 @@ $("#settingsExit").click(function() {
 });
 
 $('#randomToggle').change(function() {
-    setEcosiaMode(false)
+
     if (!this.checked) {
         chrome.storage.local.set({randomColor: false});
         document.body.style.background = bgColor;
@@ -479,13 +485,35 @@ $("#searchIcon").click(function() {
     search();
 });
 
+function getEcosiaTrees() {
+    trees = Math.floor(ecosiaSearches / 50);
+    return trees;
+}
+
+function updateEcosiaBar() {
+    var searches = ecosiaSearches
+
+    if (searches / 50 >= 1) {
+        searches = searches - (Math.trunc(searches / 50) * 50);
+    }
+    px = searches / 50 * 100 / 50 * 25;
+
+    $('#treeBar div').css('width', px)
+
+}
+
 // search bar functionality
 function search() {
     const input = $('#searchInput').val().toLowerCase().trim();
     if (input.length === 0) {
         return;
     }
-
+    if ($('#engines').val() == 'ecosia') {
+        ecosiaSearches++;
+        $('#treeNumber').html(getEcosiaTrees())
+        updateEcosiaBar()
+        chrome.storage.local.set({ecosiaSearches: ecosiaSearches});
+    }
     if (validURL(val)) {
         if (val.toLowerCase().includes("http")) {
             window.location.href = val;

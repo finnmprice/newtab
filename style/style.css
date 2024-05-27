@@ -75,6 +75,13 @@ body {
     margin-bottom: 8px;
 }
 
+.textSmall {
+    font-size: 10px;
+    margin-right: 10px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 .colorLabel {
     font-size: 16px;
     margin-right: 10px;
@@ -177,6 +184,7 @@ body {
     bottom: 0;
     width: 300px;
     aspect-ratio: 1;
+    z-index: 99;
 }
 
 .settingsHover:hover ~ #settingsButton {
@@ -200,6 +208,7 @@ body {
     background: none;
     color: #fff;
     cursor: pointer;
+    z-index: 99;
 }
 
 #settingsButton:hover {
@@ -465,6 +474,9 @@ select {
 #githubIcon img{
     width: 20px;
     height: 20px;
+}
+
+#bottomRight {
     position: absolute;
     right: 15px;
     bottom: 15px;
@@ -522,27 +534,7 @@ select {
     border: none;
 }
 
-#ecosiaLogo {
-    position: absolute;
-    top: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 250px;
-}
 
-#ecosiaTrees {
-    position: absolute;
-    width: 92%;
-    z-index: 999;
-    bottom: 0;
-    transform: translateY(40%) translateX(-50%);
-    left: 50%;
-}
-
-#ecosiaModeBg {
-    display: none;
-    user-select: none;
-}
 
 .fv {
     display: flex;
@@ -554,6 +546,7 @@ select {
     justify-content: center;
 }
 
-.lilgap {
-    height: 10px;
+.fc {
+    display: flex;
+    flex-direction: column;
 }

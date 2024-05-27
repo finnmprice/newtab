@@ -3,6 +3,7 @@
 <head>
     <title>New Tab</title>
     <link rel="stylesheet" href="/style/style.css" />
+    <link rel="stylesheet" href="/style/ecosia.css" />
     <link rel="stylesheet" href="/style/nano.min.css">
 </head>
 
@@ -160,8 +161,11 @@
                         <span id="timeModeSlider" class="slider round"></span>
                     </label>
                 </div>
-                <a id="githubIcon" href="https://github.com/finnmprice/newtab" target="_blank"><img
-                        src="/style/icons/github.svg"></img></a>
+                <div id="bottomRight" class="fv">
+                    <p class="textSmall" id="manifestVersion"></p>
+                    <a id="githubIcon" href="https://github.com/finnmprice/newtab" target="_blank"><img
+                            src="/style/icons/github.svg"></img></a>
+                </div>
             </div>
             <div class="colorSettings">
                 <img id="colorEditExit" src="/style/icons/check.svg"></img>
@@ -171,6 +175,15 @@
         </div>
 
         <div id="ecosiaModeBg">
+            <div id="treeCounter" class="fh fc fv">
+                <div class="fv">
+                    <img src="/style/svg/tree.svg">
+                    <p id="treeNumber">8</p>
+                </div>
+                <div id="treeBar">
+                    <div></div>
+                </div>
+            </div>
             <img src="/style/svg/ecosiaLogo.svg" alt="" id="ecosiaLogo">
             <img id="ecosiaTrees" src="/style/svg/ecosiaTrees.svg">
         </div>
