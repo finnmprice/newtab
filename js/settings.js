@@ -103,12 +103,18 @@ chrome.storage.local.get([
     }
 
     timeShow = result.timeShow ?? defaults.timeShow;
+    if(timeShow) {
+        $('#timeSettingsToggle').show();
+    }
     $('#time').toggle(timeShow);
     $('#timeToggle').prop("checked", timeShow);
 
     setTimeSize(result.timeFont ?? defaults.fontSize);
 
     searchShow = result.searchShow ?? defaults.showSearch;
+    if(searchShow) {
+        $('#searchSettingsToggle').show();
+    }
     $('.search').toggle(searchShow);
     $('#searchToggle').prop("checked", searchShow);
     searchY = result.searchY ?? defaults.searchY;
@@ -454,9 +460,11 @@ function hexToRgb(hex) {
 $('#timeToggle').change(function() {
     if (!this.checked) {
         $('#time').fadeOut(100);
+        $('#timeSettingsToggle').hide();
         chrome.storage.local.set({timeShow: false});
     } else {
         $('#time').fadeIn(100);
+        $('#timeSettingsToggle').show();
         chrome.storage.local.set({timeShow: true});
     }
 });
@@ -469,10 +477,13 @@ $('#fonts').on('input', function() {
 
 $('#searchToggle').change(function() {
     if (!this.checked) {
+        setEcosiaMode(false);
         $('.search').fadeOut(100);
+        $('#searchSettingsToggle').hide();
         chrome.storage.local.set({searchShow: false});
     } else {
         $('.search').fadeIn(100);
+        $('#searchSettingsToggle').show();
         chrome.storage.local.set({searchShow: true});
     }
 });

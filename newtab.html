@@ -78,60 +78,64 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
+                
+                <div id="timeSettingsToggle">
+                    <div class="fv">
+                        <p class="text">size</p>
+                        <input type="range" id="tslider" name="t" step="1" min="0" max="128" />
+                        <input id="tinput" type="text">
+                        <p class="text">px</p>
+                    </div>
+    
+                    <div class="timeLocation">
+                        <div>
+                            <button class="button1"></button>
+                            <button class="button2"></button>
+                            <button class="button3" id="selectedButton"></button>
+                        </div>
+                        <div>
+                            <button class="button4"></button>
+                            <button class="button5"></button>
+                            <button class="button6"></button>
+                        </div>
+                        <div>
+                            <button class="button7"></button>
+                            <button class="button8"></button>
+                            <button class="button9"></button>
+                        </div>
+                    </div>
+                    <label style="font-size: 12px;" for="searchEngine">font </label>
+                    <select name="fonts" id="fonts">
+                        <option value="forzan">forzan </option>
+                        <option value="unisans">uni sans </option>
+                        <option value="goodtimes">good times </option>
+                        <option value="monospaceNew">monospace </option>
+                        <option value="helveticabold">helvetica </option>
+                        <option value="nexas">nexas </option>
+                        <option value="simpletix">simpletix </option>
+                        <option value="alarmclock">alarm clock </option>
+                        <option value="romanica">romanica </option>
+                        <option value="roboto">roboto </option>
+                        <option value="bebasneue">bebas neue </option>
+                    </select>
+                    <div class="fv">
+                        <p class="text">show seconds</p>
+                        <label class="switch">
+                            <input id="showSeconds" type="checkbox" checked>
+                            <span id="timeModeSlider" class="slider round"></span>
+                        </label>
+                    </div>
 
-                <div class="fv">
-                    <p class="text">size</p>
-                    <input type="range" id="tslider" name="t" step="1" min="0" max="128" />
-                    <input id="tinput" type="text">
-                    <p class="text">px</p>
+                    <div class="fv">
+                        <p class="text">12hr</p>
+                        <label class="switch">
+                            <input id="timeMode" type="checkbox" checked>
+                            <span id="timeModeSlider" class="slider round"></span>
+                        </label>
+                        <p style="margin-left: 10px;" class="timeModeText">24hr</p>
+                    </div>
                 </div>
 
-                <div class="timeLocation">
-                    <div>
-                        <button class="button1"></button>
-                        <button class="button2"></button>
-                        <button class="button3" id="selectedButton"></button>
-                    </div>
-                    <div>
-                        <button class="button4"></button>
-                        <button class="button5"></button>
-                        <button class="button6"></button>
-                    </div>
-                    <div>
-                        <button class="button7"></button>
-                        <button class="button8"></button>
-                        <button class="button9"></button>
-                    </div>
-                </div>
-                <label style="font-size: 12px;" for="searchEngine">font </label>
-                <select name="fonts" id="fonts">
-                    <option value="forzan">forzan </option>
-                    <option value="unisans">uni sans </option>
-                    <option value="goodtimes">good times </option>
-                    <option value="monospaceNew">monospace </option>
-                    <option value="helveticabold">helvetica </option>
-                    <option value="nexas">nexas </option>
-                    <option value="simpletix">simpletix </option>
-                    <option value="alarmclock">alarm clock </option>
-                    <option value="romanica">romanica </option>
-                    <option value="roboto">roboto </option>
-                    <option value="bebasneue">bebas neue </option>
-                </select>
-                <div class="fv">
-                    <p class="text">show seconds</p>
-                    <label class="switch">
-                        <input id="showSeconds" type="checkbox" checked>
-                        <span id="timeModeSlider" class="slider round"></span>
-                    </label>
-                </div>
-                <div class="fv">
-                    <p class="text">12hr</p>
-                    <label class="switch">
-                        <input id="timeMode" type="checkbox" checked>
-                        <span id="timeModeSlider" class="slider round"></span>
-                    </label>
-                    <p style="margin-left: 10px;" class="timeModeText">24hr</p>
-                </div>
                 <div class="fv">
                     <p class="text">search bar</p>
                     <label class="switch">
@@ -139,28 +143,33 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="fv" style="margin-bottom: 10px;">
-                    <p class="text">height</p>
-                    <input type="range" id="yslider" name="t" step="1" min="5" max="95" />
-                    <input id="yinput" type="text">
-                    <p style="margin-top: 0; margin-bottom: 0;">%</p>
+
+                <div id="searchSettingsToggle">
+                    <div class="fv" style="margin-bottom: 10px;">
+                        <p class="text">height</p>
+                        <input type="range" id="yslider" name="t" step="1" min="5" max="95" />
+                        <input id="yinput" type="text">
+                        <p style="margin-top: 0; margin-bottom: 0;">%</p>
+                    </div>
+                    
+                    <label style="font-size: 12px;" for="searchEngine">search engine </label>
+                    <select name="searchEngines" id="engines">
+                        <option value="duck">DuckDuckGo </option>
+                        <option value="ecosia">Ecosia </option>
+                        <option value="google">Google </option>
+                        <option value="brave">Brave </option>
+                        <option value="bing">Bing </option>
+                        <option value="yahoo">Yahoo </option>
+                    </select>
+                    <div id="ecosiaMode" class="fv">
+                        <p class="text">ecosia mode</p>
+                        <label class="switch">
+                            <input id="ecosiaModeToggle" type="checkbox" checked>
+                            <span id="timeModeSlider" class="slider round"></span>
+                        </label>
+                    </div>
                 </div>
-                <label style="font-size: 12px;" for="searchEngine">search engine </label>
-                <select name="searchEngines" id="engines">
-                    <option value="duck">DuckDuckGo </option>
-                    <option value="ecosia">Ecosia </option>
-                    <option value="google">Google </option>
-                    <option value="brave">Brave </option>
-                    <option value="bing">Bing </option>
-                    <option value="yahoo">Yahoo </option>
-                </select>
-                <div id="ecosiaMode" class="fv">
-                    <p class="text">ecosia mode</p>
-                    <label class="switch">
-                        <input id="ecosiaModeToggle" type="checkbox" checked>
-                        <span id="timeModeSlider" class="slider round"></span>
-                    </label>
-                </div>
+
                 <div id="bottomRight" class="fv">
                     <p class="textSmall" id="manifestVersion"></p>
                     <a id="githubIcon" href="https://github.com/finnmprice/newtab" target="_blank"><img
