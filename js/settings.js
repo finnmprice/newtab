@@ -8,6 +8,8 @@ let urlMappings;
 let ecosiaMode;
 let ecosiaSearches;
 
+var searching = false;
+
 var manifestVersion = chrome.runtime.getManifest()
 $('#manifestVersion').text(`v${manifestVersion.version}`)
 
@@ -499,11 +501,16 @@ function updateEcosiaBar() {
     px = searches / 50 * 100 / 50 * 25;
 
     $('#treeBar div').css('width', px)
-
+    $('#treeSearches').html(`${ecosiaSearches} searches`);
 }
+
+$('#treeCounter').on('click', () => {
+    $('#treeCounterInfo').toggle();
+})
 
 // search bar functionality
 function search() {
+    if(searching) {return}
     const input = $('#searchInput').val().toLowerCase().trim();
     if (input.length === 0) {
         return;
@@ -514,6 +521,9 @@ function search() {
         updateEcosiaBar()
         chrome.storage.local.set({ecosiaSearches: ecosiaSearches});
     }
+    
+    searching = true;
+
     if (validURL(val)) {
         if (val.toLowerCase().includes("http")) {
             window.location.href = val;
