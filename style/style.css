@@ -383,11 +383,10 @@ input:checked+.slider:before {
 .search {
     position: absolute;
     display: flex;
-    background-color: #323233;
-    width: 500px;
-    height: 35px;
-    border-radius: 5px;
-    border: .5px solid rgba(0, 0, 0, .2);
+    background-color: rgba(0, 0, 0, .5  );
+    width: 600px;
+    height: 50px;
+    border-radius: 10px;
     align-items: center;
     justify-content: center;
     box-shadow: 1px 2px 2px rgba(0, 0, 0, .2);
@@ -396,21 +395,22 @@ input:checked+.slider:before {
 
 .search input {
     all: unset;
-    width: 475px;
+    width: 100%;
+    height: 100%;
     border: none;
     padding: 0;
     background: none;
     color: #fff;
     padding: 3px;
-    
     margin-left: 10px;
+    font-size: 16px;
 }
 
 #searchIcon {
     margin: 0px;
-    margin-right: 10px;
-    width:  14px;
-    height: 14px;
+    margin-right: 15px;
+    width:  18px;
+    height: 18px;
     opacity: .9;
 }
 
@@ -426,10 +426,10 @@ input:checked+.slider:before {
 }
 
 #clearSearch img {
-    width:  20px;
-    height: 20px;
-    margin-right: 5px;
-    opacity: .75;
+    width:  24px;
+    height: 24px;
+    margin-right: 10px;
+    opacity: 0.9;
 }
 
 #clearSearch img:hover {

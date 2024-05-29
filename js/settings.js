@@ -20,7 +20,7 @@ const defaults = {
     "timeShow": true,
     "fontSize": 64,
     "showSearch": true,
-    "searchY": 45,
+    "searchY": 40,
     "engine": "duck",
     "buttonPosition": 3,
     "font": "forzan",
@@ -521,8 +521,15 @@ $('#treeCounter').on('click', () => {
 
 // search bar functionality
 function search() {
-    if(searching) {return}
     const input = $('#searchInput').val().toLowerCase().trim();
+    if(input == 'settings') {
+        $('#searchInput').val('')
+        $('#settingsButton').click();
+        $('#clearSearch').hide();
+        return;
+    }
+
+    if(searching) {return}
     if (input.length === 0) {
         return;
     }
@@ -604,7 +611,7 @@ $('#searchInput').on('input', function() {
 
 $("#clearSearch").click(function() {
     $('#searchInput').val("");
-    $('#clearSearch').hide;
+    $('#clearSearch').hide();
     $('#searchInput').focus();
 });
 
@@ -632,13 +639,13 @@ $('#engines').on('input', function() {
 function setEcosiaMode(enable) {
     $('#ecosiaModeToggle').prop('checked', enable);
     ecosiaMode = enable;
+        chrome.storage.local.set({ecosiaMode: enable});
     if (enable) {
         $('#ecosiaModeBg').fadeIn(0);
     } else {
         let rgbValues = bgColor.match(/\d+/g);
         UpdateValue(rgbToHex(parseInt(rgbValues[0]), parseInt(rgbValues[1]), parseInt(rgbValues[2])));
         $('#ecosiaModeBg').fadeOut(0);
-        
     }
 }
 
@@ -647,7 +654,6 @@ function setEcosiaMode(enable) {
 
 $('#ecosiaModeToggle').change(function() {
     setEcosiaMode(this.checked);
-    chrome.storage.local.set({ecosiaMode: this.checked});
 });
 
 function getEngine() {
