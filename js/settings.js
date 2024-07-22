@@ -20,7 +20,7 @@ const defaults = {
     "timeShow": true,
     "fontSize": 64,
     "showSearch": true,
-    "searchY": 40,
+    "searchY": 45,
     "engine": "duck",
     "buttonPosition": 3,
     "font": "forzan",
@@ -287,6 +287,7 @@ function setSearchHeight(val) {
     $('.search').css('margin-top', val + "vh");
     $('#ecosiaLogo').css('margin-top', val + "vh");
     $('#yinput').val(val);
+    $('#yslider').val(val)
     chrome.storage.local.set({searchY: val});
     updateTextWidth('yinput')
 }
