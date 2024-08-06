@@ -3,6 +3,7 @@
 <head>
     <title>New Tab</title>
     <link rel="stylesheet" href="/style/style.css" />
+    <link rel="stylesheet" href="/style/fonts.css" />
     <link rel="stylesheet" href="/style/ecosia.css" />
     <link rel="stylesheet" href="/style/nano.min.css">
 </head>
@@ -70,7 +71,14 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-
+                <div id="gradientSpeedToggle">
+                    <div class="fv">
+                        <p class="text">gradient speed</p>
+                        <input type="range" id="gradientSpeedSlider" min="1" max="30" step="1">
+                        <input id="gradientSpeedInput" type="text">
+                        <p class="text">s</p>
+                    </div>
+                </div>
                 <div class="timeText fv">
                     <p class="text">time</p>
                     <label class="switch">
@@ -78,7 +86,7 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-                
+
                 <div id="timeSettingsToggle">
                     <div class="fv">
                         <p class="text">size</p>
@@ -86,7 +94,7 @@
                         <input id="tinput" type="text">
                         <p class="text">px</p>
                     </div>
-    
+
                     <div class="timeLocation">
                         <div>
                             <button class="button1"></button>
@@ -151,7 +159,7 @@
                         <input id="yinput" type="text">
                         <p style="margin-top: 0; margin-bottom: 0;">%</p>
                     </div>
-                    
+
                     <label style="font-size: 12px;" for="searchEngine">search engine </label>
                     <select name="searchEngines" id="engines">
                         <option value="duck">DuckDuckGo </option>
@@ -195,7 +203,8 @@
             </div>
             <div id="treeCounterInfo">
                 <div id="treeSearches"></div>
-                <div>This is the number of searches you have performed with Ecosia. The more you search - the more trees we plant.</div>
+                <div>This is the number of searches you have performed with Ecosia. The more you search - the more trees
+                    we plant.</div>
             </div>
             <img src="/style/svg/ecosiaLogo.svg" alt="" id="ecosiaLogo">
             <img id="ecosiaTrees" src="/style/svg/ecosiaTrees.svg">

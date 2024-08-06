@@ -7,13 +7,11 @@ var bgColor;
 let urlMappings;
 let ecosiaMode;
 let ecosiaSearches;
-
+let gradientSpeed;
 var searching = false;
 
 var manifestVersion = chrome.runtime.getManifest()
 $('#manifestVersion').text(`v${manifestVersion.version}`)
-
-// add ecosia tree counter
 
 const defaults = {
     "color": [24, 32, 54],
@@ -29,7 +27,8 @@ const defaults = {
     "randomColor": false,
     "randomGradient": false,
     "ecosiaMode": false,
-    "ecosiaSearches": 0
+    "ecosiaSearches": 0,
+    "gradientSpeed": 5
 }
 
 
@@ -61,7 +60,8 @@ loadUrlMappings();
 
 chrome.storage.local.get([
     "randomColor", "randomColors", "randomGradient", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
-    "engine", "buttonPosition", "font", "showSeconds", "hourMode", "ecosiaMode", "ecosiaSearches"], (result) => {
+    "engine", "buttonPosition", "font", "showSeconds", "hourMode", "ecosiaMode", "ecosiaSearches", "gradientSpeed"], (result) => {
+
 
     randomColors = result.randomColors ?? [];
     if (randomColors.length === 0) {
@@ -80,7 +80,11 @@ chrome.storage.local.get([
     $('#randomGradientToggle').prop("checked", randomGradient);
     if (randomGradient) {
         randomBgGradient();
+        $('#gradientSpeedToggle').show();
     }
+
+    gradientSpeed = result.gradientSpeed ?? defaults.gradientSpeed;
+    setGradientSpeed(gradientSpeed)
 
     ecosiaSearches = result.ecosiaSearches ?? defaults.ecosiaSearches;
     $('#treeNumber').html(getEcosiaTrees());
@@ -168,64 +172,60 @@ function randomBgColor() {
     } while (true);
 }
 
+let gradientInterval;
+let currentColor1, currentColor2, targetColor1, targetColor2;
+
 function randomBgGradient() {
-    document.body.style.transition = 'background 5s linear';
-    var color1;
-    var color2;
-
-    if(bgColor && !randomColor) {
-        let rgbValues = bgColor.match(/\d+/g);
-        let currentBg = rgbToHex(parseInt(rgbValues[0]), parseInt(rgbValues[1]), parseInt(rgbValues[2]));
-        color1 = currentBg;
-        color2 = currentBg;
+    document.body.style.transition = `background ${gradientSpeed}s linear`;
+    
+    // initialize colors if they're not set
+    if (!currentColor1 || !currentColor2) {
+        currentColor1 = randomColors[Math.floor(Math.random() * randomColors.length)];
+        currentColor2 = randomColors[Math.floor(Math.random() * randomColors.length)];
     }
-    else if (bgColor && randomColor) {
-        let rgbValues = document.body.style.backgroundColor.match(/\d+/g);
-        let currentBg = rgbToHex(parseInt(rgbValues[0]), parseInt(rgbValues[1]), parseInt(rgbValues[2]));
-        color1 = currentBg;
-        color2 = currentBg;
-    }
-    else {
-        color1 = randomColors[Math.floor(Math.random() * randomColors.length)];
-        color2 = randomColors[Math.floor(Math.random() * randomColors.length)];
-    }
-    document.body.style.background = `linear-gradient(to right, ${color1}, ${color2})`;
-
-    let interval;
-    function updateGradient() {
-        let newColor1 = randomColors[Math.floor(Math.random() * randomColors.length)];
-        let newColor2 = randomColors[Math.floor(Math.random() * randomColors.length)];
-
-        let step = 0;
-        const steps = 500;
-        interval = setInterval(() => {
-            step++;
-            let midColor1 = interpolateColor(color1, newColor1, step / steps);
-            let midColor2 = interpolateColor(color2, newColor2, step / steps);
-            document.body.style.background = `linear-gradient(to right, ${midColor1}, ${midColor2})`;
-            if (step >= steps) {
-                clearInterval(interval);
-                color1 = newColor1;
-                color2 = newColor2;
-                updateGradient();
-            }
-        }, 0);
-    }
+    
+    targetColor1 = randomColors[Math.floor(Math.random() * randomColors.length)];
+    targetColor2 = randomColors[Math.floor(Math.random() * randomColors.length)];
 
     updateGradient();
+}
 
-    function stopGradientFade() {
-        clearInterval(interval);
-        document.body.style.transition = 'none';
-
-        if ($('#randomToggle').prop('checked')) {
-            randomBgColor();
-        } else {
-            document.body.style.background = bgColor;
+function updateGradient() {
+    clearInterval(gradientInterval);
+    let step = 0;
+    const steps = gradientSpeed * 100;
+    
+    gradientInterval = setInterval(() => {
+        step++;
+        let midColor1 = interpolateColor(currentColor1, targetColor1, step / steps);
+        let midColor2 = interpolateColor(currentColor2, targetColor2, step / steps);
+        document.body.style.background = `linear-gradient(to right, ${midColor1}, ${midColor2})`;
+        
+        if (step >= steps) {
+            clearInterval(gradientInterval);
+            currentColor1 = targetColor1;
+            currentColor2 = targetColor2;
+            randomBgGradient();
         }
-    }
+    }, 10);
+}
 
-    window.stopGradientFade = stopGradientFade;
+function updateGradientSpeed() {
+    clearInterval(gradientInterval);
+    updateGradient();
+}
+
+function stopGradientFade() {
+    clearInterval(gradientInterval);
+    document.body.style.transition = 'none';
+    currentColor1 = null;
+    currentColor2 = null;
+
+    if ($('#randomToggle').prop('checked')) {
+        randomBgColor();
+    } else {
+        document.body.style.background = bgColor;
+    }
 }
 
 function interpolateColor(colorStart, colorEnd, factor) {
@@ -297,6 +297,12 @@ $('#tinput').on('input', function() {
     $(this).val(numericValue);
     updateTextWidth('tinput');
     setTimeSize(numericValue);
+});
+
+$('#gradientSpeedInput').on('input', function() {
+    let speed = $(this).val();
+    let numericValue = Math.min(30, parseInt(speed, 10));    
+    setGradientSpeed(numericValue);
 });
 
 $('#yinput').on('input', function() {
@@ -374,7 +380,6 @@ $("#settingsExit").click(function() {
 });
 
 $('#randomToggle').change(function() {
-
     if (!this.checked) {
         chrome.storage.local.set({randomColor: false});
         document.body.style.background = bgColor;
@@ -386,12 +391,33 @@ $('#randomToggle').change(function() {
 
 $('#randomGradientToggle').change(function() {
     chrome.storage.local.set({randomGradient: this.checked});
+    $('#gradientSpeedContainer').toggle(this.checked);
     if (this.checked) {
         randomBgGradient();
+        $('#gradientSpeedToggle').show()
     } else {
         stopGradientFade();
+        $('#gradientSpeedToggle').hide()
     }
 });
+
+$('#gradientSpeedSlider').on('input', function() {
+    setGradientSpeed($(this).val())
+});
+
+function setGradientSpeed(speed) {
+    gradientSpeed = parseInt(speed);
+    $('#gradientSpeedInput').val(speed);
+    $('#gradientSpeedSlider').val(speed);
+    updateTextWidth('gradientSpeedInput');
+    chrome.storage.local.set({gradientSpeed: gradientSpeed});
+    
+    document.body.style.transition = `background ${gradientSpeed}s linear`;
+    
+    if ($('#randomGradientToggle').prop('checked')) {
+        updateGradientSpeed();
+    }
+}
 
 $('#randomColorEdit').click(function() {
     $('.colorSettings').css('opacity', '1').show(0);

@@ -1,0 +1,54 @@
+@font-face {
+    font-family: monospaceNew;
+    src: url(./fonts/monospace.ttf);
+}
+
+@font-face {
+    font-family: helveticaBold;
+    src: url(./fonts/helveticaBold.ttf);
+}
+
+@font-face {
+    font-family: simpletix;
+    src: url(./fonts/simpletix.otf);
+}
+
+@font-face {
+    font-family: alarmclock;
+    src: url(./fonts/alarmclock.ttf);
+}
+
+@font-face {
+    font-family: romanica;
+    src: url(./fonts/romanica.ttf);
+}
+
+@font-face {
+    font-family: roboto;
+    src: url(./fonts/roboto.ttf);
+}
+
+@font-face {
+    font-family: bebasneue;
+    src: url(./fonts/bebasneue.ttf);
+}
+
+@font-face {
+    font-family: nexas;
+    src: url(./fonts/nexas.ttf);
+}
+
+@font-face {
+    font-family: forzan;
+    src: url(./fonts/forzan.ttf);
+}
+
+@font-face {
+    font-family: unisans;
+    src: url(./fonts/unisans.otf);
+}
+
+@font-face {
+    font-family: goodtimes;
+    src: url(./fonts/goodtimes.otf);
+}
