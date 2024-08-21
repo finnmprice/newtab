@@ -9,6 +9,7 @@ let ecosiaMode;
 let ecosiaSearches;
 let gradientSpeed;
 var searching = false;
+let noiseEnabled;
 
 var manifestVersion = chrome.runtime.getManifest()
 $('#manifestVersion').text(`v${manifestVersion.version}`)
@@ -28,7 +29,8 @@ const defaults = {
     "randomGradient": false,
     "ecosiaMode": false,
     "ecosiaSearches": 0,
-    "gradientSpeed": 5
+    "gradientSpeed": 5,
+    "noiseEnabled": false
 }
 
 
@@ -60,7 +62,7 @@ loadUrlMappings();
 
 chrome.storage.local.get([
     "randomColor", "randomColors", "randomGradient", "rgb", "timeShow", "timeFont", "searchShow", "searchY", 
-    "engine", "buttonPosition", "font", "showSeconds", "hourMode", "ecosiaMode", "ecosiaSearches", "gradientSpeed"], (result) => {
+    "engine", "buttonPosition", "font", "showSeconds", "hourMode", "ecosiaMode", "ecosiaSearches", "gradientSpeed", "noiseEnabled"], (result) => {
 
 
     randomColors = result.randomColors ?? [];
@@ -148,6 +150,10 @@ chrome.storage.local.get([
     hourMode = result.hourMode ?? defaults.military;
     $('#timeMode').prop("checked", hourMode);
     setTime();
+
+    noiseEnabled = result.noiseEnabled ?? defaults.noiseEnabled;
+    $('#noiseToggle').prop("checked", noiseEnabled);
+    $('#noiseTexture').toggle(noiseEnabled);
 });
 
 function randomBgColor() {
@@ -775,3 +781,13 @@ function setButtonLocation(buttonClass) {
 
     chrome.storage.local.set({buttonPosition: buttonClass});
 }
+
+function setNoiseTexture(enable) {
+    noiseEnabled = enable;
+    $('#noiseTexture').toggle(enable);
+    chrome.storage.local.set({noiseEnabled: enable});
+}
+
+$('#noiseToggle').change(function() {
+    setNoiseTexture(this.checked);
+});

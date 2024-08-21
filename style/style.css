@@ -507,3 +507,12 @@ select {
     display: flex;
     flex-direction: column;
 }
+
+#noiseTexture {
+    mix-blend-mode: multiply;
+    position: absolute;
+    top: 0;
+    left: 0;
+    user-select: none;
+    pointer-events: none;
+}
