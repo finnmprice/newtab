@@ -4,7 +4,6 @@
     <title>New Tab</title>
     <link rel="stylesheet" href="/style/style.css" />
     <link rel="stylesheet" href="/style/fonts.css" />
-    <link rel="stylesheet" href="/style/ecosia.css" />
     <link rel="stylesheet" href="/style/nano.min.css">
 </head>
 
@@ -168,23 +167,6 @@
                         <input id="yinput" type="text">
                         <p style="margin-top: 0; margin-bottom: 0;">%</p>
                     </div>
-
-                    <label style="font-size: 12px;" for="searchEngine">search engine </label>
-                    <select name="searchEngines" id="engines">
-                        <option value="duck">DuckDuckGo </option>
-                        <option value="ecosia">Ecosia </option>
-                        <option value="google">Google </option>
-                        <option value="brave">Brave </option>
-                        <option value="bing">Bing </option>
-                        <option value="yahoo">Yahoo </option>
-                    </select>
-                    <div id="ecosiaMode" class="fv">
-                        <p class="text">ecosia mode</p>
-                        <label class="switch">
-                            <input id="ecosiaModeToggle" type="checkbox" checked>
-                            <span id="timeModeSlider" class="slider round"></span>
-                        </label>
-                    </div>
                 </div>
 
                 <div id="bottomRight" class="fv">
@@ -198,25 +180,6 @@
                 <p style="display: inline-block; margin: 0;">random colors</p>
                 <textarea id="colorsTextArea"></textarea>
             </div>
-        </div>
-
-        <div id="ecosiaModeBg">
-            <div id="treeCounter" class="fh fc fv">
-                <div class="fv">
-                    <img src="/style/svg/tree.svg">
-                    <p id="treeNumber">8</p>
-                </div>
-                <div id="treeBar">
-                    <div></div>
-                </div>
-            </div>
-            <div id="treeCounterInfo">
-                <div id="treeSearches"></div>
-                <div>This is the number of searches you have performed with Ecosia. The more you search - the more trees
-                    we plant.</div>
-            </div>
-            <img src="/style/svg/ecosiaLogo.svg" alt="" id="ecosiaLogo">
-            <img id="ecosiaTrees" src="/style/svg/ecosiaTrees.svg">
         </div>
 
         <div class="settingsHover"></div>
